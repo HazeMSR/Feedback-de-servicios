@@ -6,7 +6,7 @@
     
     $sqlDel = "DELETE FROM usuario WHERE id = '$id'";
     
-    //Verifica si hubo un error al eliminar de la tabla alumno
+    //Verifica si hubo un error al eliminar de la tabla usuario
     if (!mysqli_query($conexion, $sqlDel)) {
         echo("Error description: " . mysqli_error($con));
     }

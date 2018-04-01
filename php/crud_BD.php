@@ -2,10 +2,6 @@
 	include("configBD.php");
 	include("getPosts.php");
 	
-	/*Selecciona de la base de datos la curp que se envio en los
-	formularios.*/
-	//$curp = $_POST["curp"];
-	//$pass = $_POST["pass"];
 	$sqlEst = "SELECT * FROM usuario";
 	$resEst = mysqli_query($conexion, $sqlEst);
 	

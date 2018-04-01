@@ -33,7 +33,7 @@
 	<script src="../js/validetta101/validetta.min.js"></script>
 	<script src="../js/validetta101/localization/validettaLang-es-ES.js"></script>
 	<script src="../js/crud.js"></script>
-
+	<script src="../js/reviewUsuario.js"></script>
     <script>
         $(document).ready(function() {
         	//Select
@@ -122,13 +122,14 @@
     <!--Modifica los datos del alumno con la instruccion update en el crud.js y update_AX-->
   	<div id="modalAddRev" class="modal">
   	<form id="formAddRev">
+  		<input type="hidden" id="id" name="id" value="<?php echo $filasA[0];?>">
         <div class="modal-content">
          	<h4 class="center-align blue white-text">A&ntilde;adir Rese&ntilde;a</h4>
          	<br>
          	<!--Selector del servicio-->
          	<div class="row">
   				<div class="input-field col s12">
-    				<select id="servicio">
+    				<select id="servicio" name="servicio">
       					<option value="" disabled selected>Selecciona el servicio:</option>
       					<?php 
 							while($filas = mysqli_fetch_array($resServ,MYSQLI_BOTH)){
@@ -144,8 +145,8 @@
     			  <div class="row">
     			    <div class="input-field col s12">
     			      <i class="material-icons prefix"></i>
-    			      <input type="hidden" id="valida" value="0">
-    			      <input type="text" id="tema" class="autocomplete" data-validetta="required maxLength[100]">
+    			      <input type="hidden" id="valida" name="valida" value="0">
+    			      <input type="text" id="tema" name="tema" class="autocomplete" data-validetta="required maxLength[100]">
     			      <label for="tema">Tema:</label>
     			    </div>
     			  </div>
@@ -154,7 +155,7 @@
   			<!--Calificacion en estrellas-->
   			<div class="row center">
   				<h4>Calificaci&oacute;n:</h4>
-  				<input type="hidden" id="estrellas" value="0">
+  				<input type="hidden" id="estrellas" name="estrellas" value="0">
 					<i class="fa fa-star fa-3x" id="star1" value="1"></i>
 					<i class="fa fa-star fa-3x" id="star2" value="2"></i>
 					<i class="fa fa-star fa-3x" id="star3" value="3"></i>  

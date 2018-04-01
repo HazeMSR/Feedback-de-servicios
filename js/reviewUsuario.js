@@ -10,8 +10,6 @@ $(document).ready(function(e) {
 				url:"addReview_AX.php",
 				data:$("#formAddRev").serialize(),
 				cache:false,
-
-				alert(data),
 				success: function(respAX){
 					if(respAX == 1){
 						$.alert({
@@ -28,7 +26,7 @@ $(document).ready(function(e) {
 						if(respAX == -1){
 							$.alert({
 								title:"Feedback",
-								content:"No se pudo agregar la rese&ntilde;ao. Intente de nuevo.",
+								content:"No se pudo cargar el tema que propone. Intente de nuevo.",
 								type:"red",
 								useBootstrap:false,
 								boxWidth:"50%"
@@ -36,8 +34,8 @@ $(document).ready(function(e) {
 						}
 						else{
 							$.alert({
-								title:"SEE",
-								content:"No se pudo insertar el registro en los usuario. Intente con otro usuario. ",
+								title:"Feedback",
+								content:"No se pudo insertar agregar la rese&ntilde;. Intente de nuevo. "+respAX,
 								type:"red",
 								useBootstrap:false,
 								boxWidth:"50%"
