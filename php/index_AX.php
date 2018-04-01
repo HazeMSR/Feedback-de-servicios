@@ -15,7 +15,7 @@
 	
 	if($infAcc >= 1){
 		$_SESSION["valido"] = "sesion";
-		$_SESSION["usuario"] = $usuario;
+		$_SESSION["id"] = $usuario;
 		echo $row[2]; //Si es correcto regresa el nivel de permiso que tiene el usuario al ajax de index.js
 	}else{
 		echo -1;
