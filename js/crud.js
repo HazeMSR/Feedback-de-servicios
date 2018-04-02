@@ -108,7 +108,6 @@ $(document).ready(function(e) {
 				success: function(respAX){
 					if(respAX == 1){
 						$.alert({
-							css:"color:#000",
 							title:"Feedback",
 							content:"Se actualizó correctamente el registro seleccionado",
 							type:"green",
@@ -131,7 +130,79 @@ $(document).ready(function(e) {
 			})
 		}
 	});
-	
+
+	$("#modalFormUpdServ").validetta({
+		
+		bubblePosition:"bottom", bubbleGapTop:10, bubbleGapLeft:-5,
+		onValid:function(e){
+			e.preventDefault();
+			$("#modalFormUpdServ").modal("close");
+			$.ajax({
+				method:"post",
+				url:"updateServ_AX.php",
+				data:$("#formUpdServ").serialize(),
+				cache:false,
+				success: function(respAX){
+					if(respAX == 1){
+						$.alert({
+							title:"Feedback",
+							content:"Se actualizó correctamente el servicio seleccionado",
+							type:"green",
+							useBootstrap:false,
+							boxWidth:"50%",
+							onClose:function(){
+								location.reload(true);
+							}
+						});
+					}else{
+						$.alert({
+							title:"Feedback",
+							content:"No se pudo actualizar el servicio. Vuelva a intentarlo: "+respAX,
+							type:"red",
+							useBootstrap:false,
+							boxWidth:"50%"
+						});
+					}
+				}
+			})
+		}
+	});
+	$("#modalFormDelServ").validetta({
+		
+		bubblePosition:"bottom", bubbleGapTop:10, bubbleGapLeft:-5,
+		onValid:function(e){
+			e.preventDefault();
+			$("#modalFormDelServ").modal("close");
+			$.ajax({
+				method:"post",
+				url:"deleteServ_AX.php",
+				data:$("#formDelServ").serialize(),
+				cache:false,
+				success: function(respAX){
+					if(respAX == 1){
+						$.alert({
+							title:"Feedback",
+							content:"Se elimino correctamente el servicio seleccionado",
+							type:"green",
+							useBootstrap:false,
+							boxWidth:"50%",
+							onClose:function(){
+								location.reload(true);
+							}
+						});
+					}else{
+						$.alert({
+							title:"Feedback",
+							content:"No se pudo eliminar el servicio. Vuelva a intentarlo: "+respAX,
+							type:"red",
+							useBootstrap:false,
+							boxWidth:"50%"
+						});
+					}
+				}
+			})
+		}
+	});
 	$("#modalFormIns").validetta({
 		bubblePosition:"bottom", bubbleGapTop:10, bubbleGapLeft:-5,
 		onValid:function(e){
@@ -180,5 +251,52 @@ $(document).ready(function(e) {
 		}
 	});
 
+	$("#modalFormInsServ").validetta({
+		bubblePosition:"bottom", bubbleGapTop:10, bubbleGapLeft:-5,
+		onValid:function(e){
+			e.preventDefault();
+			$("#modalFormInsServ").modal("close");
+			$.ajax({
+				method:"post",
+				url:"createServ_AX.php",
+				data:$("#formInsServ").serialize(),
+				cache:false,
+				success: function(respAX){
+					if(respAX == 1){
+						$.alert({
+							title:"Feedback",
+							content:"Se agregó correctamente el servicio",
+							type:"green",
+							useBootstrap:false,
+							boxWidth:"50%",
+							onClose:function(){
+								location.reload(true);
+							}
+						});
+					}else{
+						if(respAX == 2){
+							$.alert({
+								title:"SEE",
+								content:"No se pudo insertar el registro en los servicios. Intente con otro id.",
+								type:"red",
+								useBootstrap:false,
+								boxWidth:"50%"
+							});
+						}
+						else{
+							$.alert({
+								title:"SEE",
+								content:"No se pudo insertar el registro en los servicios. Intente con otro servicio. ",
+								type:"red",
+								useBootstrap:false,
+								boxWidth:"50%"
+							});
+						}
+					}
+				}
+			})
+			console.log(respAX);
+		}
+	});
 
 });

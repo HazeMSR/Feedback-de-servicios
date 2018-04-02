@@ -48,9 +48,24 @@
         $("#porServicios").css({"display":"none"});
       });
 
-      //Abre las reseñas 
+      //Abre las opiniones 
       $("#viewRev").on("click",function(){
         $("#modalOpiniones").modal("open");
+      });
+
+      //Abre el form de insertar servicios
+      $("#openServ").on("click",function(){
+        $("#modalFormInsServ").modal("open");
+      });
+
+      //Abre el form de modificar servicios
+      $("#openServMod").on("click",function(){
+        $("#modalFormUpdServ").modal("open");
+      });
+
+      //Abre el form de eliminar servicios
+      $("#openServDel").on("click",function(){
+        $("#modalFormDelServ").modal("open");
       });
 
       //Abre las gráficas por estrellas
@@ -125,19 +140,31 @@ $("#config").click(function(e) {
           </div>
 
           <div class="col s12 l3">
-            <div id="config" class="btn orange" >Mostrar/Ocultar rese&ntilde;as</div>
+            <div id="config" class="btn yellow" >Mostrar/Ocultar rese&ntilde;as</div>
             <input type="hidden" name="mostrar" id="mostrar" value="<?php echo $conf[1]; ?>">
           </div>
 
           <div class="col s12 l3"> 
-            <button id="nvoEst" class="btn yellow">Agregar Usuario</button>
-            
+            <button id="nvoEst" class="btn orange">Agregar Usuario</button>
+      
           </div>
         </div>
         <br>
         <!--Para cerrar sesion cambia el valor de la variable de sesion nombSesion a invalido, para que ya no se pueda ingresar -->
         <div class="row">
-          <a href="cerrarSesion.php?nombSesion=valido" class="btn red">Cerrar Sesi&oacute;n</a> 
+          <div class="col s12 l3">
+              <div id="openServ" class="btn purple">Agregar Servicio</div>
+           </div>
+          <div class="col s12 l3">
+              <div id="openServMod" class="btn pink">Modificar Servicio</div>
+           </div>
+          <div class="col s12 l3">
+              <div id="openServDel" class="btn orange">Eliminar Servicio</div>
+           </div>
+          <div class="col s12 l3"> 
+            <a href="cerrarSesion.php?nombSesion=valido" class="btn red">Cerrar Sesi&oacute;n</a> 
+          </div>
+
         </div>
         	<div class="row">
             	<div class="col s12">
@@ -632,6 +659,76 @@ $("#config").click(function(e) {
               </div>
               <div class="col s12 l6 input-field">
                 <button type="submit" class="btn blue" style="width:100%;">Actualizar</button>
+              </div>
+            </div>
+            </form>
+        </div>
+    </div>
+
+    <!--Modal que contiene el formulario para insertar un nuevo servicio-->
+    <div id="modalFormInsServ" class="modal">
+        <div class="modal-content">
+          <h4 class="center-align blue white-text">Agregar servicio</h4>
+            <form id="formInsServ" name="formInsServ">
+            <div class="row">
+              <div class="col s12 l12 input-field">
+                <label for="id">Nombre</label>
+                <input type="text" id="nombre" name="nombre" data-validetta="required maxLength[50]">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col s12 l6 input-field">
+                <button type="submit" class="btn blue" style="width:100%;">Agregar</button>
+              </div>
+            </div>
+            </form>
+        </div>
+    </div>
+
+  
+    <!--Modifica los datos del servicio-->
+    <div id="modalFormUpdServ" class="modal">
+        <div class="modal-content">
+          <h4 class="center-align blue white-text">Modifica servicio</h4>
+            <form id="formUpdServ" name="formUpdServ">
+            <div class="row">
+                <label for="id">Identificador actual</label>
+                <input type="text" id="id" name="id" data-validetta="required number">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col s12 l12 input-field">
+                <label for="id2">Nuevo identificador</label>
+                <input type="text" id="id2" name="id2" data-validetta="required number">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col s12 l6 input-field">
+                <label for="nombre">Nombre</label>
+                <input type="text" id="nombre" name="nombre" data-validetta="required maxLength[50]">
+              </div>
+              <div class="col s12 l6 input-field">
+                <button type="submit" class="btn blue" style="width:100%;">Actualizar</button>
+              </div>
+            </div>
+            </form>
+        </div>
+    </div>
+
+    <!--Modal que contiene el formulario para eliminar un servicio-->
+    <div id="modalFormDelServ" class="modal">
+        <div class="modal-content">
+          <h4 class="center-align blue white-text">Eliminar servicio</h4>
+            <form id="formDelServ" name="formDelServ">
+            <div class="row">
+              <div class="col s12 l12 input-field">
+                <label for="id">Identificador</label>
+                <input type="text" id="id" name="id" data-validetta="required number">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col s12 l6 input-field">
+                <button type="submit" class="btn blue" style="width:100%;">Eliminar</button>
               </div>
             </div>
             </form>
