@@ -68,7 +68,7 @@
         <div class="col s12 m12">
           <div class="icon-block">
             <h2 class="center blue-text"><i class="material-icons">group</i></h2>
-            <h5 class="center">Aplicaci&oacute;n creada por:</h5>
+            <h5 class="center">Fotografias por:</h5>
             <div class="center">
 
               <p class="light">Mart&iacute;nez San Rom&aacute;n Aar&oacute;n Hazel.</p>

@@ -143,11 +143,10 @@ $("#config").click(function(e) {
             <div id="config" class="btn yellow" >Mostrar/Ocultar rese&ntilde;as</div>
             <input type="hidden" name="mostrar" id="mostrar" value="<?php echo $conf[1]; ?>">
           </div>
-
           <div class="col s12 l3"> 
-            <button id="nvoEst" class="btn orange">Agregar Usuario</button>
-      
+            <a href="cerrarSesion.php?nombSesion=valido" class="btn black">Cerrar Sesi&oacute;n</a> 
           </div>
+
         </div>
         <br>
         <!--Para cerrar sesion cambia el valor de la variable de sesion nombSesion a invalido, para que ya no se pueda ingresar -->
@@ -159,10 +158,11 @@ $("#config").click(function(e) {
               <div id="openServMod" class="btn pink">Modificar Servicio</div>
            </div>
           <div class="col s12 l3">
-              <div id="openServDel" class="btn orange">Eliminar Servicio</div>
+              <div id="openServDel" class="btn red">Eliminar Servicio</div>
            </div>
           <div class="col s12 l3"> 
-            <a href="cerrarSesion.php?nombSesion=valido" class="btn red">Cerrar Sesi&oacute;n</a> 
+            <button id="nvoEst" class="btn orange">Agregar Usuario</button>
+      
           </div>
 
         </div>
