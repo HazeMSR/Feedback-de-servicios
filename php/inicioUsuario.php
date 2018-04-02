@@ -14,13 +14,22 @@
 		$sqlTemas = "SELECT * FROM tema";
 		$resTemas = mysqli_query($conexion, $sqlTemas);
 
+		$sqlOpi = "SELECT * FROM opinion";
+		$resOpi = mysqli_query($conexion, $sqlOpi);
+		$infOpi = mysqli_num_rows($resOpi);
+
+		$sqlTemasDist = "SELECT DISTINCT nombre FROM tema";
+		$resTemasDist = mysqli_query($conexion, $sqlTemasDist);
+		$infTemasDist = mysqli_num_rows($resTemasDist);
+
+
 ?>
 <!doctype html>
 <html>
 	<head>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 	<meta charset="utf-8">
-	<title>CRUD</title>
+	<title>Rese&ntilde;as</title>
 	<link rel="stylesheet" type="text/css" href="../materialize/css/materialize.css">
 	<link rel="stylesheet" type="text/css" href="../css/style.css">
 	<link rel="stylesheet" type="text/css" href="../fontAwesome/css/font-awesome.min.css">
@@ -32,6 +41,7 @@
 	<script src="../js/confirm/jquery-confirm.min.js"></script>
 	<script src="../js/validetta101/validetta.min.js"></script>
 	<script src="../js/validetta101/localization/validettaLang-es-ES.js"></script>
+	<script src="../js/Chart.bundle.js"></script>
 	<script src="../js/crud.js"></script>
 	<script src="../js/reviewUsuario.js"></script>
     <script>
@@ -63,6 +73,39 @@
 				$("#modalAddRev").modal("open");
 			});
 
+			//Abre las reseñas 
+			$("#openRev").on("click",function(){
+				$("#modalReviews").modal("open");
+				$("#porEstrellas").css({"display":"initial"});
+				$("#porTemas").css({"display":"none"});
+				$("#porServicios").css({"display":"none"});
+			});
+
+			//Abre las gráficas por estrellas
+			$("#porEstrellasBoton").on("click",function(){
+				$("#porEstrellas").css({"display":"initial"});
+				$("#porTemas").css({"display":"none"});
+				$("#porServicios").css({"display":"none"});
+			});
+
+			//Abre las gráficas por temas
+			$("#porTemasBoton").on("click",function(){
+				$("#porEstrellas").css({"display":"none"});
+				$("#porTemas").css({"display":"initial"});
+				$("#porServicios").css({"display":"none"});
+			});
+
+			//Abre las gráficas por servicios
+			$("#porServiciosBoton").on("click",function(){
+				$("#porEstrellas").css({"display":"none"});
+				$("#porTemas").css({"display":"none"});
+				$("#porServicios").css({"display":"initial"});
+			});
+
+			//Cierra las reseñas 
+			$(".cerrar").on("click",function(){
+				$("#modalReviews").modal("close");
+			});
 			//Estrellas de calificación
 			$("#star1").on("click",function(){
 				$("#star1").css({"color":"yellow"});
@@ -111,6 +154,7 @@
 	<body>  
     
   	<div id="modalAX" class="modal">
+
         <div class="modal-content">
           	<h4 class="center-align blue white-text">Feedback</h4>
           	<div id="respAX" style="color:#333;"></div>
@@ -127,21 +171,29 @@
          	<h4 class="center-align blue white-text">A&ntilde;adir Rese&ntilde;a</h4>
          	<br>
          	<!--Selector del servicio-->
-         	<div class="row">
+         	<div class="row center">
   				<div class="input-field col s12">
     				<select id="servicio" name="servicio">
       					<option value="" disabled selected>Selecciona el servicio:</option>
       					<?php 
+      						$a=0;
+					        $labels = "labels: [";
 							while($filas = mysqli_fetch_array($resServ,MYSQLI_BOTH)){
-								echo "<option value='$filas[0]'>$filas[1]</option>";     					
-      						}	
+								if($a!=0)
+									$labels.=",";
+								$labels.= "'$filas[1]'";
+								echo "<option value='$filas[0]'>$filas[1]</option>"; 
+								$a+=1;
+
+      						}
+      						$labels .= "],";	
       					?>
     				</select>
   				</div>         		
          	</div>
          	<!--Autocomplete del tema-->
-            <div class="row">
-    			<div class="col s12">
+            <div class="row center">
+    			<div class="col s12 l12">
     			  <div class="row">
     			    <div class="input-field col s12">
     			      <i class="material-icons prefix"></i>
@@ -152,6 +204,13 @@
     			  </div>
     			</div>
   			</div>
+  			<div class="row center">
+              <div class="col s12 l12 input-field">
+                
+                <label for="coment">Comentario:</label>
+                <input type="text" id="coment" name="coment" data-validetta="maxLength[250]">
+              </div>
+            </div>
   			<!--Calificacion en estrellas-->
   			<div class="row center">
   				<h4>Calificaci&oacute;n:</h4>
@@ -162,16 +221,10 @@
 					<i class="fa fa-star fa-3x" id="star4" value="4"></i>
 					<i class="fa fa-star fa-3x" id="star5" value="5"></i>     
             </div>
+            
             <div class="row center">
               <div class="col s12 l12 input-field">
-                
-                <label for="coment">Comentario:</label>
-                <input type="text" id="coment" name="coment" data-validetta="maxLength[250]">
-              </div>
-            </div>
-            <div class="row center">
-              <div class="col s12 l12 input-field">
-                <button type="submit" class="btn blue" style="width:100%;">Enviar Reseña</button>
+                <button type="submit" class="btn blue" style="width:50%;">Enviar Reseña</button>
               </div>
             </div>
             </form>
@@ -189,7 +242,7 @@
     <div class="parallax"><img src="../img/waves1.gif" alt="Unsplashed background img 2"></div>
   </div>
 
-
+  <!-- Cerrar Sesion -->
   <footer class="page-footer teal">
     <div class="container">
     <div class="section no-pad-bot">
@@ -212,12 +265,302 @@
     </div>
     </div>
   </footer>
+
   <?php if($conf[1] == 1){?>
+
+  <!--Modal que contiene el analisis de las reseñas-->
+  	<div id="modalReviews" class="modal">
+  		<div class="modal-content">
+	        <div class="row center">
+	            <div class="col s12 l4 input-field">
+	                <button id="porEstrellasBoton" class="btn blue" >Por Estrellas</button>
+	             </div>
+	            <div class="col s12 l4 input-field">
+	                <button id="porTemasBoton" class="btn green" >Por Temas</button>
+	             </div>
+	            <div class="col s12 l4 input-field">
+	                <button id="porServiciosBoton" class="btn orange" >Por Servicios</button>
+	             </div>
+	        </div>
+
+	  		<div class="row center" id="porEstrellas">
+	  			<div class="col s12 l12">
+	  				<div class="chart-container" style="position: relative;">
+	    			<canvas id="myChart"></canvas>
+					<script>
+					var ctx = document.getElementById("myChart");
+	
+					var myChart = new Chart(ctx, {
+					    type: 'horizontalBar',
+					    data: {
+					    	<?php   
+      							echo $labels;
+      						?>
+					        datasets: [{
+					            label: 'Promedio de estrellas recibidas',
+					            <?php 	
+									$sqlOpi = "SELECT * FROM opinion";
+									$resOpi = mysqli_query($conexion, $sqlOpi);
+
+					        		$data = "data: [";
+					        		$arr = array(0,0,0);
+					        		$veces = array(0,0,0);
+					        		$aux = 0.0;
+									while($filas = mysqli_fetch_array($resOpi,MYSQLI_BOTH)){
+										if($filas[5]==1){
+											$arr[0]+=$filas[1];
+											$veces[0]+=1;
+										}
+										else if($filas[5]==2){
+											$arr[1]+=$filas[1]; 
+											$veces[1]+=1;  
+										}
+										else if($filas[5]==3){
+											$arr[2]+=$filas[1];
+											$veces[2]+=1;   					
+										}
+      								}
+      								foreach ($arr as $i => $value) {
+      									if($i!=0)
+											$data .=",";
+										if($veces[$i]!=0)
+      										$aux = $arr[$i]/(float) ($veces[$i]);
+      									$data .= "$aux";
+      								}
+      								$data .= "],";
+      								echo $data; 
+      							?>
+					            backgroundColor: [
+					                'rgba(255, 99, 132, 0.2)',
+					                'rgba(54, 162, 235, 0.2)',
+					                'rgba(75, 192, 192, 0.2)',
+					                'rgba(255, 206, 86, 0.2)',
+					                'rgba(153, 102, 255, 0.2)',
+					                'rgba(255, 159, 64, 0.2)'
+					            ],
+					            borderColor: [
+					                'rgba(255,99,132,1)',
+					                'rgba(54, 162, 235, 1)',
+					                'rgba(75, 192, 192, 1)',
+					                'rgba(255, 206, 86, 1)',
+					                'rgba(153, 102, 255, 1)',
+					                'rgba(255, 159, 64, 1)'
+					            ],
+					            borderWidth: 1
+					        }]
+					    },
+					    options: {
+					        scales: {
+					            xAxes: [{
+					                ticks: {
+					                    beginAtZero:true
+					                }
+					            }]
+					        }
+					    }
+					});
+					</script>
+					</div>
+				</div>
+			</div>
+			<div id="porTemas">
+				<?php 
+					$t=0;
+
+					while($filas = mysqli_fetch_array($resTemasDist,MYSQLI_BOTH)){
+						$j=0;
+						$arr[] = 0;
+						$veces[] = 0;
+						$sqlTemasT = "SELECT * FROM tema WHERE nombre ='$filas[0]'";
+						$resTemasT = mysqli_query($conexion, $sqlTemasT);
+				?>
+	  			<div class="row center">
+	  			<div class="col s12 l12">
+	  				<div class="chart-container" style="position: relative; ">
+	    			<canvas id="myChartT<?php echo $t;?>"></canvas>
+					<script>
+
+					var ctx = document.getElementById("myChartT<?php echo $t;?>");
+	
+					var myChart = new Chart(ctx, {
+					    type: 'bar',
+					    data: {
+					    	<?php  
+					    		$a=0;
+
+					    		$labelsT="labels: [";
+					    		while($filasD = mysqli_fetch_array($resTemasT,MYSQLI_BOTH)){
+      								if($a!=0)
+										$labelsT .=",";
+									
+									$sqlServN = "SELECT nombre FROM servicio WHERE idservicio ='$filasD[2]'";
+									$resServN = mysqli_query($conexion, $sqlServN);
+									$nombreServicio = mysqli_fetch_array($resServN,MYSQLI_BOTH);
+									
+									$sqlOpi = "SELECT * FROM opinion WHERE idS='$filasD[2]' AND idT='$filasD[0]'";
+									$resOpi = mysqli_query($conexion, $sqlOpi);
+
+					        		$aux = 0.0;
+
+									while($filasO = mysqli_fetch_array($resOpi,MYSQLI_BOTH)){
+										$arr[$a]+=$filasO[1];
+										$veces[$a]+=1;   					
+      								}
+
+									$labelsT .="'$nombreServicio[0]'";
+									$a += 1;
+					    		} 
+					    		   $data = "data:[";
+      								foreach ($arr as $i => $value) {
+      									if($i!=0)
+											$data .=",";
+										if($veces[$i]!=0)
+      										$aux = $arr[$i]/(float) ($veces[$i]);
+      									$data .= "$aux";
+      								}
+      								$data .= "],";
+      							$labelsT .="],";
+      							echo $labelsT;
+
+      						?>
+					        datasets: [{
+					            label: 'Promedio del tema: <?php echo $filas[0];?>',
+					            <?php 	
+
+      								echo $data; 
+      							?>
+					            backgroundColor: [
+					                'rgba(255, 99, 132, 0.2)',
+					                'rgba(54, 162, 235, 0.2)',
+					                'rgba(75, 192, 192, 0.2)',
+					                'rgba(255, 206, 86, 0.2)',
+					                'rgba(153, 102, 255, 0.2)',
+					                'rgba(255, 159, 64, 0.2)'
+					            ],
+					            borderColor: [
+					                'rgba(255,99,132,1)',
+					                'rgba(54, 162, 235, 1)',
+					                'rgba(75, 192, 192, 1)',
+					                'rgba(255, 206, 86, 1)',
+					                'rgba(153, 102, 255, 1)',
+					                'rgba(255, 159, 64, 1)'
+					            ],
+					            borderWidth: 1
+					        }]
+					    },
+					    options: {
+					        scales: {
+					            xAxes: [{
+					                ticks: {
+					                    beginAtZero:true
+					                }
+					            }]
+					        }
+					    }
+					});
+					</script>
+					</div>
+				</div>
+				</div>
+				<?php
+					$t+=1;
+				}
+				?>
+			</div>
+			<div id="porServicios">
+	  			<div class="row center">
+	  			<div class="col s12 l12">
+	  				<div class="chart-container" style="position: relative; ">
+	    			<canvas id="myChart3"></canvas>
+					<script>
+					var ctx = document.getElementById("myChart3");
+	
+					var myChart = new Chart(ctx, {
+					    type: 'horizontalBar',
+					    data: {
+					    	<?php   
+      							echo "labels: ['rojo','azul','verde'],";
+      						?>
+					        datasets: [{
+					            label: 'Promedio de estrellas recibidas',
+					            <?php 	
+									$sqlOpi = "SELECT * FROM opinion";
+									$resOpi = mysqli_query($conexion, $sqlOpi);
+
+					        		$data = "data: [";
+					        		$arr = array(0,0,0);
+					        		$veces = array(0,0,0);
+					        		$aux = 0.0;
+									while($filas = mysqli_fetch_array($resOpi,MYSQLI_BOTH)){
+										if($filas[5]==1){
+											$arr[0]+=$filas[1];
+											$veces[0]+=1;
+										}
+										else if($filas[5]==2){
+											$arr[1]+=$filas[1]; 
+											$veces[1]+=1;  
+										}
+										else if($filas[5]==3){
+											$arr[2]+=$filas[1];
+											$veces[2]+=1;   					
+										}
+      								}
+      								foreach ($arr as $i => $value) {
+      									if($i!=0)
+											$data .=",";
+										if($veces[$i]!=0)
+      										$aux = $arr[$i]/(float) ($veces[$i]);
+      									$data .= "$aux";
+      								}
+      								$data .= "],";
+      								echo $data; 
+      							?>
+					            backgroundColor: [
+					                'rgba(255, 99, 132, 0.2)',
+					                'rgba(54, 162, 235, 0.2)',
+					                'rgba(75, 192, 192, 0.2)',
+					                'rgba(255, 206, 86, 0.2)',
+					                'rgba(153, 102, 255, 0.2)',
+					                'rgba(255, 159, 64, 0.2)'
+					            ],
+					            borderColor: [
+					                'rgba(255,99,132,1)',
+					                'rgba(54, 162, 235, 1)',
+					                'rgba(75, 192, 192, 1)',
+					                'rgba(255, 206, 86, 1)',
+					                'rgba(153, 102, 255, 1)',
+					                'rgba(255, 159, 64, 1)'
+					            ],
+					            borderWidth: 1
+					        }]
+					    },
+					    options: {
+					        scales: {
+					            xAxes: [{
+					                ticks: {
+					                    beginAtZero:true
+					                }
+					            }]
+					        }
+					    }
+					});
+					</script>
+					</div>
+				</div>
+				</div>
+			</div>
+	        <div class="row center">
+	            <div class="col s12 l6 input-field">
+	                <button class="btn red cerrar" >Cerrar</button>
+	             </div>
+	        </div>
+	    </div>
+  	</div>  
   <div class="parallax-container valign-wrapper" id="mostrar">
     <div class="section ">
       <div class="container">
         <div class="row center">
-          <a href="cerrarSesion.php?nombSesion=valido" class="btn blue">Ver reseñas</a>
+          <div id="openRev" class="btn blue">An&aacute;lisis de las rese&ntilde;as</a>
         </div>
       </div>
     </div>

@@ -5632,17 +5632,19 @@ button.btn-floating {
   right: 0;
   background-color: #fafafa;
   padding: 0;
-  max-height: 70%;
-  width: 55%;
+  max-height: 90%;
+  width: 75% !important;
+  height: 80% !important;
   margin: auto;
   overflow-y: auto;
   border-radius: 2px;
   will-change: top, opacity;
+
 }
 
 @media only screen and (max-width: 992px) {
   .modal {
-    width: 80%;
+    width: 90%;
   }
 }
 
@@ -5662,7 +5664,7 @@ button.btn-floating {
   border-radius: 0 0 2px 2px;
   background-color: #fafafa;
   padding: 4px 6px;
-  height: 56px;
+  height: 156px !important;
   width: 100%;
   text-align: right;
 }
@@ -5687,7 +5689,7 @@ button.btn-floating {
 
 .modal.modal-fixed-footer {
   padding: 0;
-  height: 70%;
+  height: 80% !important;
 }
 
 .modal.modal-fixed-footer .modal-content {
@@ -5709,7 +5711,7 @@ button.btn-floating {
   bottom: -100%;
   margin: 0;
   width: 100%;
-  max-height: 45%;
+  max-height: 65%;
   border-radius: 0;
   will-change: bottom, opacity;
 }
@@ -8309,10 +8311,19 @@ input[type=range]:focus::-ms-fill-upper {
   visibility: visible;
   -webkit-animation: pulse-animation 1s cubic-bezier(0.24, 0, 0.38, 1) infinite;
           animation: pulse-animation 1s cubic-bezier(0.24, 0, 0.38, 1) infinite;
-  -webkit-transition: opacity .3s, visibility 0s 1s, -webkit-transform .3s;
-  transition: opacity .3s, visibility 0s 1s, -webkit-transform .3s;
-  transition: opacity .3s, transform .3s, visibility 0s 1s;
-  transition: opacity .3s, transform .3s, visibility 0s 1s, -webkit-transform .3s;
+  -webkit-transition: opacity .3s,
+ visibility 0s 1s,
+ -webkit-transform .3s;
+  transition: opacity .3s,
+ visibility 0s 1s,
+ -webkit-transform .3s;
+  transition: opacity .3s,
+ transform .3s,
+ visibility 0s 1s;
+  transition: opacity .3s,
+ transform .3s,
+ visibility 0s 1s,
+ -webkit-transform .3s;
 }
 
 .tap-target {
@@ -8365,10 +8376,19 @@ input[type=range]:focus::-ms-fill-upper {
 
 .tap-target-wave::after {
   visibility: hidden;
-  -webkit-transition: opacity .3s, visibility 0s, -webkit-transform .3s;
-  transition: opacity .3s, visibility 0s, -webkit-transform .3s;
-  transition: opacity .3s, transform .3s, visibility 0s;
-  transition: opacity .3s, transform .3s, visibility 0s, -webkit-transform .3s;
+  -webkit-transition: opacity .3s,
+ visibility 0s,
+ -webkit-transform .3s;
+  transition: opacity .3s,
+ visibility 0s,
+ -webkit-transform .3s;
+  transition: opacity .3s,
+ transform .3s,
+ visibility 0s;
+  transition: opacity .3s,
+ transform .3s,
+ visibility 0s,
+ -webkit-transform .3s;
   z-index: -1;
 }
 
