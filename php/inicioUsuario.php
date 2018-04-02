@@ -353,9 +353,16 @@
 					        scales: {
 					            xAxes: [{
 					                ticks: {
-					                    beginAtZero:true
+					                    beginAtZero:true,
+					                    max:5
 					                }
-					            }]
+					            }],
+					            yAxes: [{
+					                ticks: {
+					                    beginAtZero:true,
+					                    max:5
+					                }
+					            }],
 					        }
 					    }
 					});
@@ -454,7 +461,13 @@
 					                ticks: {
 					                    beginAtZero:true
 					                }
-					            }]
+					            }],
+					            yAxes: [{
+					                ticks: {
+					                    beginAtZero:true,
+					                    max:5
+					                }
+					            }],
 					        }
 					    }
 					});
@@ -468,43 +481,63 @@
 				?>
 			</div>
 			<div id="porServicios">
+				<?php 
+					$t=0;
+					$sqlServ = "SELECT * FROM servicio";
+					$resServ = mysqli_query($conexion, $sqlServ);
+
+					while($filas = mysqli_fetch_array($resServ,MYSQLI_BOTH)){
+						$a=0;
+
+				?>
 	  			<div class="row center">
 	  			<div class="col s12 l12">
 	  				<div class="chart-container" style="position: relative; ">
-	    			<canvas id="myChart3"></canvas>
+	    			<canvas id="myChartS<?php echo $t;?>"></canvas>
 					<script>
-					var ctx = document.getElementById("myChart3");
+					var ctx = document.getElementById("myChartS<?php echo $t;?>");
 	
 					var myChart = new Chart(ctx, {
 					    type: 'horizontalBar',
 					    data: {
 					    	<?php   
-      							echo "labels: ['rojo','azul','verde'],";
+					    		$labelsS ="labels: [";
+					    		$data = "data: [";
+					    		$aux = 0.0;
+
+					    		$sqlTemasDist = "SELECT DISTINCT nombre FROM tema WHERE idS='$filas[0]'";
+								$resTemasDist = mysqli_query($conexion, $sqlTemasDist);
+
+									while($filasDD = mysqli_fetch_array($resTemasDist,MYSQLI_BOTH)){
+										$arr[] = 0;
+										$veces[] = 0;
+
+										if($a!=0)
+											$labelsS .= ",";
+										$sqlTemasT = "SELECT * FROM tema WHERE nombre ='$filasDD[0]' AND idS='$filas[0]'";
+										$resTemasT = mysqli_query($conexion, $sqlTemasT);
+
+										while($filasD = mysqli_fetch_array($resTemasT,MYSQLI_BOTH)){
+											$sqlOpi = "SELECT * FROM opinion WHERE idS ='$filas[0]' AND idT ='$filasD[0]' ";
+											$resOpi = mysqli_query($conexion, $sqlOpi);
+
+											while($filasO = mysqli_fetch_array($resOpi,MYSQLI_BOTH)){
+												$arr[$a]+=$filasO[1];
+												$veces[$a]+= 1;
+											} 	
+										}
+
+										$labelsS .= "'$filasDD[0]'";
+
+										$a+=1;
+									}
+
+					    		$labelsS .= "],";
+      							echo $labelsS;
       						?>
 					        datasets: [{
-					            label: 'Promedio de estrellas recibidas',
+					            label: 'Promedio del Servicio: <?php echo $filas[1];?>',
 					            <?php 	
-									$sqlOpi = "SELECT * FROM opinion";
-									$resOpi = mysqli_query($conexion, $sqlOpi);
-
-					        		$data = "data: [";
-					        		$arr = array(0,0,0);
-					        		$veces = array(0,0,0);
-					        		$aux = 0.0;
-									while($filas = mysqli_fetch_array($resOpi,MYSQLI_BOTH)){
-										if($filas[5]==1){
-											$arr[0]+=$filas[1];
-											$veces[0]+=1;
-										}
-										else if($filas[5]==2){
-											$arr[1]+=$filas[1]; 
-											$veces[1]+=1;  
-										}
-										else if($filas[5]==3){
-											$arr[2]+=$filas[1];
-											$veces[2]+=1;   					
-										}
-      								}
       								foreach ($arr as $i => $value) {
       									if($i!=0)
 											$data .=",";
@@ -521,7 +554,12 @@
 					                'rgba(75, 192, 192, 0.2)',
 					                'rgba(255, 206, 86, 0.2)',
 					                'rgba(153, 102, 255, 0.2)',
-					                'rgba(255, 159, 64, 0.2)'
+					                'rgba(255, 159, 64, 0.2)',
+					                'rgba(238, 62, 172, 0.2)',
+					                'rgba(100, 214, 56, 0.2)',
+					                'rgba(168,115,35, 0.2)',
+					                'rgba(39,80,215, 0.2)',
+					                'rgba(20,183,77, 0.2)'
 					            ],
 					            borderColor: [
 					                'rgba(255,99,132,1)',
@@ -529,7 +567,13 @@
 					                'rgba(75, 192, 192, 1)',
 					                'rgba(255, 206, 86, 1)',
 					                'rgba(153, 102, 255, 1)',
-					                'rgba(255, 159, 64, 1)'
+					                'rgba(255, 159, 64, 1)',
+					                'rgba(238, 62, 172, 1)',
+					                'rgba(100, 214, 56, 1)',
+					                'rgba(168,115,35, 1)',
+					                'rgba(39,80,215, 1)',
+					                'rgba(20,183,77, 1)'
+
 					            ],
 					            borderWidth: 1
 					        }]
@@ -538,7 +582,14 @@
 					        scales: {
 					            xAxes: [{
 					                ticks: {
-					                    beginAtZero:true
+					                    beginAtZero:true,
+					                    max:5
+					                }
+					            }],
+					            yAxes: [{
+					                ticks: {
+					                    beginAtZero:true,
+					                    max: 5
 					                }
 					            }]
 					        }
@@ -548,6 +599,10 @@
 					</div>
 				</div>
 				</div>
+				<?php
+					$t+=1;
+					}
+				?>
 			</div>
 	        <div class="row center">
 	            <div class="col s12 l6 input-field">

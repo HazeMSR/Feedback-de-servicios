@@ -3,6 +3,21 @@
 	session_start();
 	if($_SESSION["valido"] == "sesion"){
 		include("crud_BD.php");
+    $sqlConf = "SELECT * FROM config WHERE idconfig=1";
+    $resConf = mysqli_query($conexion, $sqlConf);
+    $conf = mysqli_fetch_array($resConf,MYSQLI_BOTH);
+
+
+    $sqlTemas = "SELECT * FROM tema";
+    $resTemas = mysqli_query($conexion, $sqlTemas);
+
+    $sqlOpi = "SELECT * FROM opinion";
+    $resOpi = mysqli_query($conexion, $sqlOpi);
+    $infOpi = mysqli_num_rows($resOpi);
+
+    $sqlTemasDist = "SELECT DISTINCT nombre FROM tema";
+    $resTemasDist = mysqli_query($conexion, $sqlTemasDist);
+    $infTemasDist = mysqli_num_rows($resTemasDist);
 ?>
 <!doctype html>
 <html>
@@ -21,13 +36,78 @@
 <script src="../js/validetta101/validetta.min.js"></script>
 <script src="../js/validetta101/localization/validettaLang-es-ES.js"></script>
 <script src="../js/crud.js"></script>
-      <script>
-         $(document).ready(function() {
-            $('select').material_select();
-         });
-          
+<script src="../js/Chart.bundle.js"></script>
+    <script>
+        $(document).ready(function() {
 
-      </script>
+      //Abre las reseñas 
+      $("#openRev").on("click",function(){
+        $("#modalReviews").modal("open");
+        $("#porEstrellas").css({"display":"initial"});
+        $("#porTemas").css({"display":"none"});
+        $("#porServicios").css({"display":"none"});
+      });
+
+      //Abre las reseñas 
+      $("#viewRev").on("click",function(){
+        $("#modalOpiniones").modal("open");
+      });
+
+      //Abre las gráficas por estrellas
+      $("#porEstrellasBoton").on("click",function(){
+        $("#porEstrellas").css({"display":"initial"});
+        $("#porTemas").css({"display":"none"});
+        $("#porServicios").css({"display":"none"});
+      });
+
+      //Abre las gráficas por temas
+      $("#porTemasBoton").on("click",function(){
+        $("#porEstrellas").css({"display":"none"});
+        $("#porTemas").css({"display":"initial"});
+        $("#porServicios").css({"display":"none"});
+      });
+
+      //Abre las gráficas por servicios
+      $("#porServiciosBoton").on("click",function(){
+        $("#porEstrellas").css({"display":"none"});
+        $("#porTemas").css({"display":"none"});
+        $("#porServicios").css({"display":"initial"});
+      });
+
+      //Cierra las reseñas 
+      $(".cerrar").on("click",function(){
+        $("#modalReviews").modal("close");
+        $("#modalOpiniones").modal("close");
+      });
+
+$("#config").click(function(e) {
+    var c=$("#mostrar").val();
+    console.log("1 "+c);
+    if(c==1)
+      c=0;
+    else
+      c=1;
+    console.log("2 "+c);
+    $.ajax({
+      method:"post",
+      url:"Mostrar.php",
+      cache:false,
+      data:{mostrar:c},
+      success: function(respAX){
+        console.log(respAX);
+                    $.alert({
+              title:"Feedback",
+              content:"Se actualizo la configuracion",
+              type:"green",
+              useBootstrap:false,
+              boxWidth:"50%"
+            });
+      }
+    });
+    });
+  
+        });
+    </script>
 </head>
 
 <body class="page-footer teal" >
@@ -35,9 +115,30 @@
     </section>
     <section id="contenidos">
     	<div class="container">
+        <div class="row center">
+          <div class="col s12 l3">
+              <div id="openRev" class="btn blue">An&aacute;lisis de las rese&ntilde;as</div>
+           </div>
+
+          <div class="col s12 l3"> 
+            <div id="viewRev" class="btn green">Mostrar rese&ntilde;as</div>
+          </div>
+
+          <div class="col s12 l3">
+            <div id="config" class="btn orange" >Mostrar/Ocultar rese&ntilde;as</div>
+            <input type="hidden" name="mostrar" id="mostrar" value="<?php echo $conf[1]; ?>">
+          </div>
+
+          <div class="col s12 l3"> 
+            <button id="nvoEst" class="btn yellow">Agregar Usuario</button>
+            
+          </div>
+        </div>
+        <br>
         <!--Para cerrar sesion cambia el valor de la variable de sesion nombSesion a invalido, para que ya no se pueda ingresar -->
-        	<a href="cerrarSesion.php?nombSesion=valido" class="btn blue">Cerrar Sesi&oacute;n</a> 
-            <button id="nvoEst" class="btn blue">Nuevo Estudiante</button>
+        <div class="row">
+          <a href="cerrarSesion.php?nombSesion=valido" class="btn red">Cerrar Sesi&oacute;n</a> 
+        </div>
         	<div class="row">
             	<div class="col s12">
                 	<table class="responsive-table">
@@ -56,7 +157,414 @@
     </section>
     <section id="pie">
     </section>
-    
+   <div id="modalOpiniones" class="modal">
+      <div class="modal-content">
+          <div class="row center">
+              <div class="col s12 l6 input-field">
+                <button class="btn red cerrar" >Cerrar</button>
+              </div>
+          </div>
+        <div class="row center" id="op">
+            <table class="responsive-table highlight">
+              <thead>
+                <tr>
+                    <th>Tema</th>
+                    <th>Servicio</th>
+                    <th>Calificaci&oacute;n</th>
+                    <th>Comentario</th>
+                    <th>Usuario</th>
+                </tr>
+              </thead>
+              <tbody>
+
+
+                <?php 
+                  while($filas = mysqli_fetch_array($resOpi,MYSQLI_BOTH)){
+                    echo "<tr>";
+                    $sqlTemas = "SELECT * FROM tema WHERE idtema='$filas[3]'";
+                    $resTemas = mysqli_query($conexion, $sqlTemas);
+                    $temas = mysqli_fetch_array($resTemas,MYSQLI_BOTH);
+                    echo "<td>$temas[1]</td>"; 
+
+                    $sqlServ = "SELECT * FROM servicio WHERE idservicio='$filas[5]'";
+                    $resServ = mysqli_query($conexion, $sqlServ);
+                    $serv = mysqli_fetch_array($resServ,MYSQLI_BOTH);
+                    echo "<td>$serv[1]</td>"; 
+
+                    echo "<td>$filas[1]</td>"; 
+                    echo "<td>$filas[2]</td>"; 
+
+                    $sqlUsu = "SELECT * FROM usuario WHERE id='$filas[4]'";
+                    $resUsu = mysqli_query($conexion, $sqlUsu);
+                    $usu = mysqli_fetch_array($resUsu,MYSQLI_BOTH);
+                    echo "<td>$usu[0]</td>";                     
+                    echo "</tr>";
+                  }
+                ?>
+              </tbody>
+            
+              </table>
+        </div>
+      </div>
+  </div>
+
+  <!--Modal que contiene el analisis de las reseñas-->
+    <div id="modalReviews" class="modal">
+      <div class="modal-content">
+          <div class="row center">
+              <div class="col s12 l4 input-field">
+                  <button id="porEstrellasBoton" class="btn blue" >Por Estrellas</button>
+               </div>
+              <div class="col s12 l4 input-field">
+                  <button id="porTemasBoton" class="btn green" >Por Temas</button>
+               </div>
+              <div class="col s12 l4 input-field">
+                  <button id="porServiciosBoton" class="btn orange" >Por Servicios</button>
+               </div>
+          </div>
+
+        <div class="row center" id="porEstrellas">
+          <div class="col s12 l12">
+            <div class="chart-container" style="position: relative;">
+            <canvas id="myChart"></canvas>
+          <script>
+          var ctx = document.getElementById("myChart");
+  
+          var myChart = new Chart(ctx, {
+              type: 'horizontalBar',
+              data: {
+                <?php   
+                  $labels = "labels: [";
+                      $sqlServ = "SELECT * FROM servicio";
+                  $resServ = mysqli_query($conexion, $sqlServ);
+
+              while($filas = mysqli_fetch_array($resServ,MYSQLI_BOTH)){
+                if($a!=0)
+                  $labels.=",";
+                $labels.= "'$filas[1]'";
+                $a+=1;
+
+                  }
+                  $labels .= "],";  
+                    echo $labels;
+                  ?>
+                  datasets: [{
+                      label: 'Promedio de estrellas recibidas',
+                      <?php   
+                  $sqlOpi = "SELECT * FROM opinion";
+                  $resOpi = mysqli_query($conexion, $sqlOpi);
+
+                      $data = "data: [";
+                      $arr = array(0,0,0);
+                      $veces = array(0,0,0);
+                      $aux = 0.0;
+                  while($filas = mysqli_fetch_array($resOpi,MYSQLI_BOTH)){
+                    if($filas[5]==1){
+                      $arr[0]+=$filas[1];
+                      $veces[0]+=1;
+                    }
+                    else if($filas[5]==2){
+                      $arr[1]+=$filas[1]; 
+                      $veces[1]+=1;  
+                    }
+                    else if($filas[5]==3){
+                      $arr[2]+=$filas[1];
+                      $veces[2]+=1;             
+                    }
+                      }
+                      foreach ($arr as $i => $value) {
+                        if($i!=0)
+                      $data .=",";
+                    if($veces[$i]!=0)
+                          $aux = $arr[$i]/(float) ($veces[$i]);
+                        $data .= "$aux";
+                      }
+                      $data .= "],";
+                      echo $data; 
+                    ?>
+                      backgroundColor: [
+                          'rgba(255, 99, 132, 0.2)',
+                          'rgba(54, 162, 235, 0.2)',
+                          'rgba(75, 192, 192, 0.2)',
+                          'rgba(255, 206, 86, 0.2)',
+                          'rgba(153, 102, 255, 0.2)',
+                          'rgba(255, 159, 64, 0.2)'
+                      ],
+                      borderColor: [
+                          'rgba(255,99,132,1)',
+                          'rgba(54, 162, 235, 1)',
+                          'rgba(75, 192, 192, 1)',
+                          'rgba(255, 206, 86, 1)',
+                          'rgba(153, 102, 255, 1)',
+                          'rgba(255, 159, 64, 1)'
+                      ],
+                      borderWidth: 1
+                  }]
+              },
+              options: {
+                  scales: {
+                      xAxes: [{
+                          ticks: {
+                              beginAtZero:true,
+                              max:5
+                          }
+                      }],
+                      yAxes: [{
+                          ticks: {
+                              beginAtZero:true,
+                              max:5
+                          }
+                      }],
+                  }
+              }
+          });
+          </script>
+          </div>
+        </div>
+      </div>
+      <div id="porTemas">
+        <?php 
+          $t=0;
+
+          while($filas = mysqli_fetch_array($resTemasDist,MYSQLI_BOTH)){
+            $j=0;
+            $arr[] = 0;
+            $veces[] = 0;
+            $sqlTemasT = "SELECT * FROM tema WHERE nombre ='$filas[0]'";
+            $resTemasT = mysqli_query($conexion, $sqlTemasT);
+        ?>
+          <div class="row center">
+          <div class="col s12 l12">
+            <div class="chart-container" style="position: relative; ">
+            <canvas id="myChartT<?php echo $t;?>"></canvas>
+          <script>
+
+          var ctx = document.getElementById("myChartT<?php echo $t;?>");
+  
+          var myChart = new Chart(ctx, {
+              type: 'bar',
+              data: {
+                <?php  
+                  $a=0;
+
+                  $labelsT="labels: [";
+                  while($filasD = mysqli_fetch_array($resTemasT,MYSQLI_BOTH)){
+                      if($a!=0)
+                    $labelsT .=",";
+                  
+                  $sqlServN = "SELECT nombre FROM servicio WHERE idservicio ='$filasD[2]'";
+                  $resServN = mysqli_query($conexion, $sqlServN);
+                  $nombreServicio = mysqli_fetch_array($resServN,MYSQLI_BOTH);
+                  
+                  $sqlOpi = "SELECT * FROM opinion WHERE idS='$filasD[2]' AND idT='$filasD[0]'";
+                  $resOpi = mysqli_query($conexion, $sqlOpi);
+
+                      $aux = 0.0;
+
+                  while($filasO = mysqli_fetch_array($resOpi,MYSQLI_BOTH)){
+                    $arr[$a]+=$filasO[1];
+                    $veces[$a]+=1;            
+                      }
+
+                  $labelsT .="'$nombreServicio[0]'";
+                  $a += 1;
+                  } 
+                     $data = "data:[";
+                      foreach ($arr as $i => $value) {
+                        if($i!=0)
+                      $data .=",";
+                    if($veces[$i]!=0)
+                          $aux = $arr[$i]/(float) ($veces[$i]);
+                        $data .= "$aux";
+                      }
+                      $data .= "],";
+                    $labelsT .="],";
+                    echo $labelsT;
+
+                  ?>
+                  datasets: [{
+                      label: 'Promedio del tema: <?php echo $filas[0];?>',
+                      <?php   
+
+                      echo $data; 
+                    ?>
+                      backgroundColor: [
+                          'rgba(255, 99, 132, 0.2)',
+                          'rgba(54, 162, 235, 0.2)',
+                          'rgba(75, 192, 192, 0.2)',
+                          'rgba(255, 206, 86, 0.2)',
+                          'rgba(153, 102, 255, 0.2)',
+                          'rgba(255, 159, 64, 0.2)'
+                      ],
+                      borderColor: [
+                          'rgba(255,99,132,1)',
+                          'rgba(54, 162, 235, 1)',
+                          'rgba(75, 192, 192, 1)',
+                          'rgba(255, 206, 86, 1)',
+                          'rgba(153, 102, 255, 1)',
+                          'rgba(255, 159, 64, 1)'
+                      ],
+                      borderWidth: 1
+                  }]
+              },
+              options: {
+                  scales: {
+                      xAxes: [{
+                          ticks: {
+                              beginAtZero:true
+                          }
+                      }],
+                      yAxes: [{
+                          ticks: {
+                              beginAtZero:true,
+                              max:5
+                          }
+                      }],
+                  }
+              }
+          });
+          </script>
+          </div>
+        </div>
+        </div>
+        <?php
+          $t+=1;
+        }
+        ?>
+      </div>
+      <div id="porServicios">
+        <?php 
+          $t=0;
+          $sqlServ = "SELECT * FROM servicio";
+          $resServ = mysqli_query($conexion, $sqlServ);
+
+          while($filas = mysqli_fetch_array($resServ,MYSQLI_BOTH)){
+            $a=0;
+
+        ?>
+          <div class="row center">
+          <div class="col s12 l12">
+            <div class="chart-container" style="position: relative; ">
+            <canvas id="myChartS<?php echo $t;?>"></canvas>
+          <script>
+          var ctx = document.getElementById("myChartS<?php echo $t;?>");
+  
+          var myChart = new Chart(ctx, {
+              type: 'horizontalBar',
+              data: {
+                <?php   
+                  $labelsS ="labels: [";
+                  $data = "data: [";
+                  $aux = 0.0;
+
+                  $sqlTemasDist = "SELECT DISTINCT nombre FROM tema WHERE idS='$filas[0]'";
+                $resTemasDist = mysqli_query($conexion, $sqlTemasDist);
+
+                  while($filasDD = mysqli_fetch_array($resTemasDist,MYSQLI_BOTH)){
+                    $arr[] = 0;
+                    $veces[] = 0;
+
+                    if($a!=0)
+                      $labelsS .= ",";
+                    $sqlTemasT = "SELECT * FROM tema WHERE nombre ='$filasDD[0]' AND idS='$filas[0]'";
+                    $resTemasT = mysqli_query($conexion, $sqlTemasT);
+
+                    while($filasD = mysqli_fetch_array($resTemasT,MYSQLI_BOTH)){
+                      $sqlOpi = "SELECT * FROM opinion WHERE idS ='$filas[0]' AND idT ='$filasD[0]' ";
+                      $resOpi = mysqli_query($conexion, $sqlOpi);
+
+                      while($filasO = mysqli_fetch_array($resOpi,MYSQLI_BOTH)){
+                        $arr[$a]+=$filasO[1];
+                        $veces[$a]+= 1;
+                      }   
+                    }
+
+                    $labelsS .= "'$filasDD[0]'";
+
+                    $a+=1;
+                  }
+
+                  $labelsS .= "],";
+                    echo $labelsS;
+                  ?>
+                  datasets: [{
+                      label: 'Promedio del Servicio: <?php echo $filas[1];?>',
+                      <?php   
+                      foreach ($arr as $i => $value) {
+                        if($i!=0)
+                      $data .=",";
+                    if($veces[$i]!=0)
+                          $aux = $arr[$i]/(float) ($veces[$i]);
+                        $data .= "$aux";
+                      }
+                      $data .= "],";
+                      echo $data; 
+                    ?>
+                      backgroundColor: [
+                          'rgba(255, 99, 132, 0.2)',
+                          'rgba(54, 162, 235, 0.2)',
+                          'rgba(75, 192, 192, 0.2)',
+                          'rgba(255, 206, 86, 0.2)',
+                          'rgba(153, 102, 255, 0.2)',
+                          'rgba(255, 159, 64, 0.2)',
+                          'rgba(238, 62, 172, 0.2)',
+                          'rgba(100, 214, 56, 0.2)',
+                          'rgba(168,115,35, 0.2)',
+                          'rgba(39,80,215, 0.2)',
+                          'rgba(20,183,77, 0.2)'
+                      ],
+                      borderColor: [
+                          'rgba(255,99,132,1)',
+                          'rgba(54, 162, 235, 1)',
+                          'rgba(75, 192, 192, 1)',
+                          'rgba(255, 206, 86, 1)',
+                          'rgba(153, 102, 255, 1)',
+                          'rgba(255, 159, 64, 1)',
+                          'rgba(238, 62, 172, 1)',
+                          'rgba(100, 214, 56, 1)',
+                          'rgba(168,115,35, 1)',
+                          'rgba(39,80,215, 1)',
+                          'rgba(20,183,77, 1)'
+
+                      ],
+                      borderWidth: 1
+                  }]
+              },
+              options: {
+                  scales: {
+                      xAxes: [{
+                          ticks: {
+                              beginAtZero:true,
+                              max:5
+                          }
+                      }],
+                      yAxes: [{
+                          ticks: {
+                              beginAtZero:true,
+                              max: 5
+                          }
+                      }]
+                  }
+              }
+          });
+          </script>
+          </div>
+        </div>
+        </div>
+        <?php
+          $t+=1;
+          }
+        ?>
+      </div>
+          <div class="row center">
+              <div class="col s12 l6 input-field">
+                  <button class="btn red cerrar" >Cerrar</button>
+               </div>
+          </div>
+      </div>
+    </div>  
+
+
     <!-- Modals -->
     
   	<div id="modalAX" class="modal">
@@ -103,7 +611,7 @@
     <!--Modal que contiene el formulario para insertar un nuevo alumno-->
     <div id="modalFormIns" class="modal">
         <div class="modal-content">
-          <h4 class="center-align blue white-text">Modifica usuario</h4>
+          <h4 class="center-align blue white-text">Agregar usuario</h4>
             <form id="formIns" name="formIns">
             <div class="row">
               <div class="col s12 l12 input-field">

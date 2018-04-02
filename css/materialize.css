@@ -5631,7 +5631,7 @@ button.btn-floating {
   left: 0;
   right: 0;
   color: #555;
-  background-color: #777;
+  background-color: #BBB;
   padding: 0;
   max-height: 70%;
   width: 55%;
@@ -5661,7 +5661,7 @@ button.btn-floating {
 
 .modal .modal-footer {
   border-radius: 0 0 2px 2px;
-  background-color: #555;
+  background-color: #AAA;
   padding: 4px 6px;
   height: 56px;
   width: 100%;
