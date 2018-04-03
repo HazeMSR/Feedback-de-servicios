@@ -71,7 +71,7 @@
             <h5 class="center">Fotografias por:</h5>
             <div class="center">
 
-              <p class="light">Mart&iacute;nez San Rom&aacute;n Aar&oacute;n Hazel.</p>
+              <p class="light">Aar&oacute;n Hazel Martínez San Román</p>
             </div>
           </div>
         </div>
@@ -96,7 +96,7 @@
   <footer class="page-footer teal">
     <div class="container">
       <div class="row center">
-        ESCOM 
+        Ing. de software - Equipo 2 
       </div>
       <!--<div class="row">
         <div class="col l6 s12">

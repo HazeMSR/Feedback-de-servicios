@@ -20,12 +20,10 @@ $(document).ready(function(e) {
 					}else{
 						console.log(respAX);
 						if(respAX == 1){
-							alert(respAX);
 							$(location).attr("href","php/crud.php");
 						}else{
 							
 							if(respAX == 0){
-								alert(respAX);
 								$(location).attr("href","php/inicioUsuario.php");
 							}
 						}
