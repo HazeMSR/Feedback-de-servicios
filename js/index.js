@@ -25,6 +25,8 @@ $(document).ready(function(e) {
 							
 							if(respAX == 0){
 								$(location).attr("href","php/inicioUsuario.php");
+							
+								console.log("Entro")
 							}
 						}
 					}

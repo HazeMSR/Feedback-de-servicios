@@ -21,7 +21,7 @@
 <body>  
   <div id="modalAX" class="modal">
       <div class="modal-content">
-          <h4 class="center-align blue white-text">SEE</h4>
+          <h4 class="center-align blue white-text">Feedback</h4>
         </div>
       </div>
   </div>
@@ -37,12 +37,12 @@
           <form id="formAcc">
             <div class="row center">
               <div class="col s12 l6 input-field">
-                <label for="usuario" id="lusuario"><strong>Usuario:</strong></label>
-                  <input type="text" id="usuario" name="usuario" data-validetta="required">
+                <label for="usuario" id="lusuario" style="color:#005dff;"><strong>Usuario:</strong></label>
+                  <input type="text" id="usuario" name="usuario" data-validetta="required" style="color:#fff;font-size: 2em;">
               </div>
               <div class="col s12 l6 input-field">
-                <label for="contra" id="lcontra"><strong>Contrase&ntilde;a:</strong></label>
-                  <input type="password" id="contra" name="contra" data-validetta="required">
+                <label for="contra" id="lcontra" style="color:#005dff;"><strong>Contrase&ntilde;a:</strong></label>
+                  <input type="password" id="contra" name="contra" data-validetta="required" style="color:#fff; font-size: 2em;">
               </div>
             </div>
             <div class="row center">
@@ -89,7 +89,7 @@
         </div>
       </div>
     </div>
-    <div class="parallax"><img src="img/w2.jpg" alt="Unsplashed background img 2"></div>
+    <div class="parallax"><img src="img/w3.jpg" alt="Unsplashed background img 2"></div>
   </div>
 
 
