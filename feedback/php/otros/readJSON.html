@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Read JSON</title>
+</head>
+
+<body>
+<script>
+	var json = '[{"boleta":"2016630003","nombre":"Miguel \u00c1ngel","primerApe":"Moreno","segundoApe":"Mu\u00f1oz","sexo":"M","correo":"miguel@miguel.com"},{"boleta":"2016630010","nombre":"Luis","primerApe":"L\u00f3pez","segundoApe":"Luna","sexo":"M","correo":"luis@luis.com"},{"boleta":"2016630024","nombre":"Ana Mar\u00eda","primerApe":"Anaya","segundoApe":"Anaya","sexo":"F","correo":"anamaria@anamaria.com"},{"boleta":"201663005","nombre":"Melissa","primerApe":"Mendez","segundoApe":"M\u00e9ndez","sexo":"F","correo":"melissa@melissa.com"},{"boleta":"2016630100","nombre":"Juan","primerApe":"P\u00e9rez","segundoApe":"P\u00e9rez","sexo":"M","correo":"juan@juan.com"}]';
+	var obj = JSON.parse(json);
+	var boletas = "";
+	for(var i = 0; i < obj.length; i++){
+ 	 	boletas += obj[i].boleta+"-";
+	}
+	
+	alert(boletas);
+</script>
+</body>
+</html>
