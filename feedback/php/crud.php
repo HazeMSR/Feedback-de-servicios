@@ -716,7 +716,7 @@ $("#config").click(function(e) {
             <form id="formDelServ" name="formDelServ">
             <div class="row">
               <div class="col s12 l12 input-field">
-                <label for="id">Identificador</label>
+                <label for="id">Nombre:</label>
                 <input type="text" id="id" name="id" data-validetta="required number">
               </div>
             </div>
