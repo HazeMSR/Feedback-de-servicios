@@ -25,20 +25,28 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <meta charset="utf-8">
 <title>CRUD</title>
+<script src="../js/jquery-3.1.1.min.js"></script>
+<script src="../js/confirm/jquery-confirm.min.js"></script>
+<script src="../materialize/js/materialize.min.js"></script>
+<script src="../js/validetta101/validetta.min.js"></script>
+<script src="../js/validetta101/localization/validettaLang-es-ES.js"></script>
+<script src="../js/crud.js"></script>
+<script src="../js/Chart.bundle.js"></script>
+
 <link rel="stylesheet" type="text/css" href="../css/materialize.css">
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 <link rel="stylesheet" type="text/css" href="../fontAwesome/css/font-awesome.min.css">
 <link rel="stylesheet" type="text/css" href="../js/confirm/jquery-confirm.min.css">
 <link rel="stylesheet" type="text/css" href="../js/validetta101/validetta.min.css">
-<script src="../js/jquery-3.1.1.min.js"></script>
-<script src="../materialize/js/materialize.min.js"></script>
-<script src="../js/confirm/jquery-confirm.min.js"></script>
-<script src="../js/validetta101/validetta.min.js"></script>
-<script src="../js/validetta101/localization/validettaLang-es-ES.js"></script>
-<script src="../js/crud.js"></script>
-<script src="../js/Chart.bundle.js"></script>
+<script src="../js/fragHoriz.js"></script>
     <script>
+
+        
         $(document).ready(function() {
+
+
+        $('select').material_select();
+
 
       //Abre las reseñas 
       $("#openRev").on("click",function(){
@@ -129,7 +137,7 @@ $("#config").click(function(e) {
 	<section id="encabezado">
     </section>
     <section id="contenidos">
-    	<div class="container">
+
         <div class="row center">
           <div class="col s12 l3">
               <div id="openRev" class="btn blue">An&aacute;lisis de las rese&ntilde;as</div>
@@ -140,7 +148,7 @@ $("#config").click(function(e) {
           </div>
 
           <div class="col s12 l3">
-            <div id="config" class="btn yellow" >Mostrar/Ocultar rese&ntilde;as</div>
+            <div id="config" class="btn yellow black-text" >Mostrar/Ocultar rese&ntilde;as</div>
             <input type="hidden" name="mostrar" id="mostrar" value="<?php echo $conf[1]; ?>">
           </div>
           <div class="col s12 l3"> 
@@ -166,9 +174,102 @@ $("#config").click(function(e) {
           </div>
 
         </div>
+        <br>
+        <br>
+        <form>
+          <div class="row center">
+            <h2 class="center-align white-text">Fragmentaci&oacute;n Horizontal</h2>
+            <div class="col s12 m12 l6">
+              <h4 class="center-align white-text">1) Definir condiciones de fragmentaci&oacute;n</h4>
+
+              <h5 class="left-align">Leer esquema:</h5>
+
+                <div class="input-field col s12">
+                  <select id="relacion" name="relacion" class="white-text">
+                    <option class='white-text' value="" disabled selected>Escoja la relaci&oacute;n</option>
+                      <?php echo $regEst2; ?>
+                  </select>
+                  <label class="white-text">(Relaci&oacute;n)</label>
+                </div>
+
+
+                <div id="tabla">
+
+                </div>
+            </div>
+            <div class="col s12 m12 l6">
+              <h4 class="center-align white-text">3) Generar fragmentos minit&eacute;rminos</h4>
+                <table class='centered responsive-table black'>
+                  <thead>
+                    <tr>
+                      <th>ID del Predicado:</th>
+                      <th>Relación:</th>
+                      <th>Predicado:
+                        <br>
+                         (Atributo, Operador, Valor)
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody id="mostrarPredicados">
+
+                  </tbody>
+                </table>
+                <br>
+                  <div id="generarFM" class="btn cyan accent-2 black-text" predicados="0"> Generar F.M.</div>
+            </div>
+          </div>
+          <div class="row center">
+            <div class="col s12 m12 l6">
+              <h4 class="center-align white-text">2) Definir predicados simples</h4>
+
+                  <h5 class="left-align">
+                    Atributo:
+                  </h5>
+
+                  <div id="atributo">
+              
+                  </div>
+
+                  <h5 class="left-align">
+                    Operador:
+                  </h5>
+
+                  <div id="operador">
+              
+                  </div>
+
+                  <h5 class="left-align">
+                    Valor:
+                  </h5>
+
+                  <div class='input-field col s12'>
+                  <div id="valor">
+                    
+
+                  </div>
+                  <label for='valor' class="white-text">Ingrese el valor:</label></div>
+                <div class="col s12 l12"> 
+                  <div id="agregarPredic" class="btn deep-purple darken-2 white-text" predicados="0"> Agregar predicado </div>
+                </div>
+
+            </div>
+            <div class="col s12 m12 l6">
+              <h4 class="center-align white-text">4) Colocar fragmentos minit&eacute;rminos</h4>
+                    <div class="row">
+        <div class="input-field col s12 white-text">
+          <textarea id="textarea1" class="materialize-textarea white-text"></textarea>
+          <label for="textarea1" class="white-text">Ingrese los enunciados Minit&eacute;rminos:</label>
+        </div>
+      </div>
+            </div>
+          </div>
+        </form>
+        <br>
+        <br>
         	<div class="row">
+            <h2 class="center-align white-text">Usuarios registrados en la base</h2>
             	<div class="col s12">
-                	<table class="responsive-table">
+                	<table class="centered responsive-table stripped deep-purple darken-4 ">
                     	<thead>
                         	<tr><th>ID:</th><th>Acci&oacute;n:</th>
                         </thead>
@@ -233,7 +334,6 @@ $("#config").click(function(e) {
               </table>
         </div>
       </div>
-  </div>
 
   <!--Modal que contiene el analisis de las reseñas-->
     <div id="modalReviews" class="modal">
@@ -727,7 +827,8 @@ $("#config").click(function(e) {
             </div>
             </form>
         </div>
-    </div>
+
+
 </body>
 </html>
 <?php
