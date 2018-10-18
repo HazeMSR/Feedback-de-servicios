@@ -1,4 +1,17 @@
  $(document).ready(function() {
+ 	function dec2bin(dec){
+    	return (dec >>> 0).toString(2);
+	}
+	function addPadding(number,pad){
+		var i=0;
+		var ret="";
+		while(i<pad){
+			ret+="0";
+			i++;
+		}
+		ret += number.toString();
+		return ret;
+	}
  	  function compruebaFM(aux,i,p,auxR,auxA,auxO,auxV){
  	  	var val=true;
  	  	$.ajax({
@@ -375,8 +388,8 @@
      	var auxO="";
      	var auxV="";
      	var val =true;
-     	if(p!=0)
-	     	while(i<p && val){
+     	if(p!=0){
+     		while(i<p && val){
 	     		aux='#p'+i.toString();
 	     		var comprueba = $(aux).val();
 	     		if( comprueba != null){
@@ -386,10 +399,27 @@
 		     		auxV = $(aux).attr('valor');
 
 		     		val = compruebaFM(aux,i,p,auxR,auxA,auxO,auxV);		     			
-	     		}
-		
+	     		}	
 	     		i++;
 	     	}
+	     	var combinaciones=[];
+	     	var noDeCombi=$("#numeroP").val();
+	     	var n = Math.pow(2,noDeCombi);
+	     	var i = 0;
+	     	var aux=0;
+	     	var aux2=0;
+	     	while(i<n){
+	     		aux=dec2bin(i);
+	     		aux2=noDeCombi-aux.toString().length;
+	     		if(aux2!=0)
+	     			combinaciones.push(addPadding(aux,aux2));
+	     		else
+	     			combinaciones.push(aux.toString());
+	     		i++;
+	     	}
+	     	console.log(combinaciones);
+     	}
+
 	    else{alert('No hay ningun predicado, por favor agregue enunciados.');}
 	
 	    

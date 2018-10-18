@@ -214,8 +214,16 @@ $("#config").click(function(e) {
 
                   </tbody>
                 </table>
-                <br>
+
+                <div class="row">
+                  <div class="col s12 l12 input-field">
+                    <label for="id" class="white-text">N&uacute;mero de predicados por minit&eacute;rminos:</label>
+                    <input type="number" id="numeroP" name="numeroP" value="2" min="2">
+                  </div>
+                </div>                
+
                   <div id="generarFM" class="btn cyan accent-2 black-text" predicados="0"> Generar F.M.</div>
+
             </div>
           </div>
           <div class="row center">

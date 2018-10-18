@@ -32,18 +32,5 @@
 		";
 		$a+=1;
 	}
-	$cadenaHTML1 = " ";
-	$i = 2000;
-    while($i>=1917){
-        $cadenaHTML1=$cadenaHTML1+"<option value='"+$i+"'>"+$i+"</option>";
-        $i-=1;
-    }
-	$cadenaHTML2 = " ";
-	$j = 12;
-    while($j>=1){
-        $cadenaHTML2=$cadenaHTML2+"<option value='"+$j+"'>"+$j+"</option>";
-        $j-=1;
-    }
-	$cadenaHTML3 = " ";
-		
+
 ?>
