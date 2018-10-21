@@ -128,7 +128,23 @@ $("#config").click(function(e) {
       }
     });
     });
-  
+
+$("#fragHid").click(function(e) {
+  $("#fragHid").attr("class","light-blue accent-3 z-depth-5 col s12 m12 l6");
+  $("#fragHH2").attr("class","center-align black-text");
+  $("#fragVid").attr("class","col s12 m12 l6");
+  $("#fragVH2").attr("class","center-align light-green accent-3 light-green-text z-depth-3 ");
+  $("#fragVert").hide( 1000 );
+  $("#fragHoriz").show( 1000 );
+});
+$("#fragVid").click(function(e) {
+  $("#fragVid").attr("class","light-green accent-3 z-depth-5 col s12 m12 l6");
+  $("#fragVH2").attr("class","center-align black-text");
+  $("#fragHid").attr("class","col s12 m12 l6");
+  $("#fragHH2").attr("class","center-align light-blue accent-3 light-blue-text z-depth-3 ");
+  $("#fragVert").show( 1000 );
+  $("#fragHoriz").hide( 1000 );
+});
         });
     </script>
 </head>
@@ -176,12 +192,19 @@ $("#config").click(function(e) {
         </div>
         <br>
         <br>
-        <form>
           <div class="row center">
-            <h2 class="center-align white-text">Fragmentaci&oacute;n Horizontal</h2>
-            <div class="col s12 m12 l6">
-              <h4 class="center-align white-text">1) Definir condiciones de fragmentaci&oacute;n</h4>
+              <div id="fragHid" class="light-blue accent-3 z-depth-5 col s12 m12 l6"><h2 id="fragHH2" class="center-align black-text ">Fragmentaci&oacute;n Horizontal</h2></div>
+              <div id="fragVid" class="col s12 m12 l6"><h2 id="fragVH2" class="center-align light-green accent-3  light-green-text z-depth-3 ">Fragmentaci&oacute;n Vertical</h2></div>
+          </div>
+        <div id="fragHoriz">
 
+          <br>
+          <br>
+          <div class="row center">
+
+            <div class=" col s12 m12 l6">
+              <h4 class="center-align white-text">1) Definir condiciones de fragmentaci&oacute;n</h4>
+              <br>
               <h5 class="left-align">Leer esquema:</h5>
 
                 <div class="input-field col s12">
@@ -199,6 +222,7 @@ $("#config").click(function(e) {
             </div>
             <div class="col s12 m12 l6">
               <h4 class="center-align white-text">3) Generar fragmentos minit&eacute;rminos</h4>
+              <br>
                 <table class='centered responsive-table black'>
                   <thead>
                     <tr>
@@ -217,15 +241,16 @@ $("#config").click(function(e) {
 
                 <div class="row">
                   <div class="col s12 l12 input-field">
-                    <label for="id" class="white-text">N&uacute;mero de predicados por minit&eacute;rminos:</label>
+                    <label for="numeroP" class="white-text">N&uacute;mero de predicados por minit&eacute;rminos:</label>
                     <input type="number" id="numeroP" name="numeroP" value="2" min="2">
                   </div>
                 </div>                
 
-                  <div id="generarFM" class="btn cyan accent-2 black-text" predicados="0"> Generar F.M.</div>
+                  <div id="generarFM" class="btn blue darken-4 white-text" predicados="0"> Generar F.M.</div>
 
             </div>
           </div>
+          <br>
           <div class="row center">
             <div class="col s12 m12 l6">
               <h4 class="center-align white-text">2) Definir predicados simples</h4>
@@ -263,15 +288,128 @@ $("#config").click(function(e) {
             </div>
             <div class="col s12 m12 l6">
               <h4 class="center-align white-text">4) Colocar fragmentos minit&eacute;rminos</h4>
-                    <div class="row">
-        <div class="input-field col s12 white-text">
-          <textarea id="textarea1" class="materialize-textarea white-text"></textarea>
-          <label for="textarea1" class="white-text">Ingrese los enunciados Minit&eacute;rminos:</label>
-        </div>
-      </div>
+              <table class="centered responsive-table black ">
+                <thead><tr>
+                  <th>ID del Fragmento:</th><th>Minit&eacute;rmino:</th>
+                </tr></thead>
+                <tbody id="mini" val="false" frag="0">
+
+                </tbody>
+              </table>
+              <br>
+              <div id="ComprobarM" class="btn teal darken-4 white-text"> Comprobar F.M.</div>
             </div>
           </div>
-        </form>
+        </div>
+
+
+        <div id="fragVert">
+
+          <br>
+          <br>
+          <div class="row center">
+
+            <div class=" col s12 m12 l6">
+              <h4 class="center-align white-text">1) Definir condiciones de fragmentaci&oacute;n</h4>
+              <br>
+              <h5 class="left-align">Leer esquema:</h5>
+
+                <div class="input-field col s12">
+                  <select id="relacionV" name="relacionV" class="white-text">
+                    <option class='white-text' value="" disabled selected>Escoja la relaci&oacute;n</option>
+                      <?php echo $regEst2; ?>
+                  </select>
+                  <label class="white-text">(Relaci&oacute;n)</label>
+                </div>
+
+
+                <div id="tablaV">
+
+                </div>
+            </div>
+            <div class="col s12 m12 l6">
+              <h4 class="center-align white-text">3) Generar fragmentos minit&eacute;rminos</h4>
+              <br>
+                <table class='centered responsive-table black'>
+                  <thead>
+                    <tr>
+                      <th>ID del Predicado:</th>
+                      <th>Relación:</th>
+                      <th>Predicado:
+                        <br>
+                         (Atributo, Operador, Valor)
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody id="mostrarPredicadosV">
+
+                  </tbody>
+                </table>
+
+                <div class="row">
+                  <div class="col s12 l12 input-field">
+                    <label for="numeroPV" class="white-text">N&uacute;mero de predicados por minit&eacute;rminos:</label>
+                    <input type="number" id="numeroPV" name="numeroPv" value="2" min="2">
+                  </div>
+                </div>                
+
+                  <div id="generarFMV" class="btn blue darken-4 white-text" predicados="0"> Generar F.M.</div>
+
+            </div>
+          </div>
+          <br>
+          <div class="row center">
+            <div class="col s12 m12 l6">
+              <h4 class="center-align white-text">2) Definir predicados simples</h4>
+
+                  <h5 class="left-align">
+                    Atributo:
+                  </h5>
+
+                  <div id="atributoV">
+              
+                  </div>
+
+                  <h5 class="left-align">
+                    Operador:
+                  </h5>
+
+                  <div id="operadorV">
+              
+                  </div>
+
+                  <h5 class="left-align">
+                    Valor:
+                  </h5>
+
+                  <div class='input-field col s12'>
+                  <div id="valorV">
+                    
+
+                  </div>
+                  <label for='valor' class="white-text">Ingrese el valor:</label></div>
+                <div class="col s12 l12"> 
+                  <div id="agregarPredicV" class="btn deep-purple darken-2 white-text" predicados="0"> Agregar predicado </div>
+                </div>
+
+            </div>
+            <div class="col s12 m12 l6">
+              <h4 class="center-align white-text">4) Colocar fragmentos minit&eacute;rminos</h4>
+              <table class="centered responsive-table black ">
+                <thead><tr>
+                  <th>ID del Fragmento:</th><th>Minit&eacute;rmino:</th>
+                </tr></thead>
+                <tbody id="miniV" val="false" frag="0">
+
+                </tbody>
+              </table>
+              <br>
+              <div id="ComprobarMV" class="btn teal darken-4 white-text"> Comprobar F.M.</div>
+            </div>
+          </div>
+        </div>
+        
+        
         <br>
         <br>
         	<div class="row">
@@ -279,7 +417,7 @@ $("#config").click(function(e) {
             	<div class="col s12">
                 	<table class="centered responsive-table stripped deep-purple darken-4 ">
                     	<thead>
-                        	<tr><th>ID:</th><th>Acci&oacute;n:</th>
+                        	<tr><th>ID:</th><th>Acci&oacute;n:</th></tr>
                         </thead>
                         <tbody>
   							<div id="infoEstudiantes">

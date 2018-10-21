@@ -12,6 +12,17 @@
 		ret += number.toString();
 		return ret;
 	}
+	function compruebaRepetidos(arr,elem){
+		var i=0;
+		var len= arr.length;
+
+		while(i<len){
+			if(arr[i]==elem)
+				return true;
+			i++;
+		}
+		return false;
+	}
  	  function compruebaFM(aux,i,p,auxR,auxA,auxO,auxV){
  	  	var val=true;
  	  	$.ajax({
@@ -25,8 +36,6 @@
 		      		val == false;
 		      		$(aux).replaceWith("");
 		      	}
-		      	else if(i==(p-1))
-		      		alert('Sus predicados están listos para generar minitérminos.');
 		      }
 		    });
  	  	return val;
@@ -402,28 +411,121 @@
 	     		}	
 	     		i++;
 	     	}
-	     	var combinaciones=[];
 	     	var noDeCombi=$("#numeroP").val();
-	     	var n = Math.pow(2,noDeCombi);
-	     	var i = 0;
-	     	var aux=0;
-	     	var aux2=0;
-	     	while(i<n){
-	     		aux=dec2bin(i);
-	     		aux2=noDeCombi-aux.toString().length;
-	     		if(aux2!=0)
-	     			combinaciones.push(addPadding(aux,aux2));
+
+	     	if(noDeCombi>p || noDeCombi<2){
+	     		if(noDeCombi>p)
+	     			alert("Ingrese más predicados antes de hacer los minitérminos.");
 	     		else
-	     			combinaciones.push(aux.toString());
-	     		i++;
+	     			alert("Ingrese un número de minitérminos mayor o igual a "+noDeCombi.toString()+".");
 	     	}
-	     	console.log(combinaciones);
+	     	else{
+	     		var combinaciones=[];	
+	     		var n = Math.pow(2,noDeCombi);
+	     		var i = 0,j=0;
+	     		var aux=0;
+	     		var aux2=0;
+	     		while(i<n){
+	     			aux=dec2bin(i);
+	     			aux2=noDeCombi-aux.toString().length;
+	     			if(aux2!=0)
+	     				combinaciones.push(addPadding(aux,aux2));
+	     			else
+	     				combinaciones.push(aux.toString());
+	     			i++;
+	     		}
+
+	     		var cLen=combinaciones.length;
+	     		var aux3='';
+	     		var res="";
+	     		var rand=0;
+	     		var pre = [];
+	     		var val = true;
+
+	     		aux=aux.toString();
+	     		aux2=combinaciones[0].length;
+				i=0;
+
+				while(i<noDeCombi){
+					pre.push(null);
+
+					do{
+	     				rand=Math.floor((Math.random() * p) + 0);
+
+	     				val = compruebaRepetidos(pre,rand);
+
+	     				if(!val)
+	     					pre[i]=$("#p"+rand.toString()).attr("name");
+
+	     				console.log("do: pre: "+pre[i]+" val: "+val+" rand: "+rand);
+	     				// pre == null , val == true
+	     			}while(pre[i]==null );
+	     			pre[i]=rand;
+
+					i++;
+				}	     		
+
+				i=0;
+				var queries=[];
+				var query='';
+	     		while(i<cLen){
+	     			query='';
+	     			res+="<tr id='m"+i.toString()+"' name='m"+i.toString()+"' query=''><td>m <sub>"+i.toString()+"</sub> : </td><td>"
+	     			j=0;
+	     			aux=combinaciones[i];
+	     			while(j<aux2){
+	     				aux3=aux.charAt(j);
+	     				if(aux3=='0'){
+	     					if(j==0){
+	     						res+="p <sub>"+pre[j]+"</sub>";
+	     						query+="p"+pre[j];
+	     					}
+	     					else{
+	     						res+=" ^ p <sub>"+pre[j]+"</sub>";
+	     						query+=" ^ p"+pre[j];
+	     					}
+	     				}
+	     				else{
+	     					if(j==0){
+	     						res+="~(p <sub>"+pre[j]+"</sub>)";
+	     						query+="~(p"+pre[j]+")";
+	     					}
+	     					else{
+	     						res+=" ^ ~(p <sub>"+pre[j]+"</sub>)";
+	     						query+=" ^ ~(p"+pre[j]+")";
+	     					}
+	     				}
+	     				
+	     				j++;
+	     			}
+	     			queries.push(query);
+	     			res+="</td></tr>"
+	     			i++;
+	     		}
+	     		if($("#mini").attr("val") == "false"){
+	     			$('#mini').append(res);
+	     			$("#mini").attr("val","true");
+	     			$("#mini").attr("frag",i);
+	     			i=0;
+	     			while(i<cLen){
+	     				$("#m"+i.toString()).attr("query",queries[i]);
+	     				i++;
+	     			}
+	     		}
+	     		else{
+	     			alert("Ya hay fragmentos minitérminos. Coloque primero los fragmentos en los sitios y después pruebe de nuevo.");
+	     		}
+
+	     	}
+
      	}
 
 	    else{alert('No hay ningun predicado, por favor agregue enunciados.');}
 	
 	    
      });
-	    
+	 $('#comprobarM').on("click",function(){
+
+	 });
 
 });
