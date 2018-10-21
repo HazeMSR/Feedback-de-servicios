@@ -1,4 +1,5 @@
  $(document).ready(function() {
+
  	function dec2bin(dec){
     	return (dec >>> 0).toString(2);
 	}
@@ -32,7 +33,7 @@
 		      data:{relacion:auxR,atributo:auxA,operador:auxO,valor:auxV},
 		      success: function(res){ 
 		      	if(!/[1-9]+/i.test(res)){
-		      		alert('Su predicado #'+i.toString()+" esta mal. Por lo tanto, se eliminará.\nPuede agregar más predicados o en todo caso dar click en 'Generar F.M.' de nuevo.");
+		      		alert('Su predicado #'+i+" esta mal. Por lo tanto, se eliminará.\nPuede agregar más predicados o en todo caso dar click en 'Generar F.M.' de nuevo.");
 		      		val == false;
 		      		$(aux).replaceWith("");
 		      	}
@@ -98,7 +99,7 @@
       	var aux="";
 
       	while(i<p){
-      		aux = '#p'+i.toString();
+      		aux = '#p'+i;
       		auxR = $(aux).attr('relacion');
       		auxA = $(aux).attr('atributo');
       		auxO = $(aux).attr('operador');
@@ -399,7 +400,7 @@
      	var val =true;
      	if(p!=0){
      		while(i<p && val){
-	     		aux='#p'+i.toString();
+	     		aux='#p'+i;
 	     		var comprueba = $(aux).val();
 	     		if( comprueba != null){
 		     		auxR = $(aux).attr('relacion');
@@ -417,7 +418,7 @@
 	     		if(noDeCombi>p)
 	     			alert("Ingrese más predicados antes de hacer los minitérminos.");
 	     		else
-	     			alert("Ingrese un número de minitérminos mayor o igual a "+noDeCombi.toString()+".");
+	     			alert("Ingrese un número de minitérminos mayor o igual a "+noDeCombi+".");
 	     	}
 	     	else{
 	     		var combinaciones=[];	
@@ -470,7 +471,7 @@
 				var query='';
 	     		while(i<cLen){
 	     			query='';
-	     			res+="<tr id='m"+i.toString()+"' name='m"+i.toString()+"' query=''><td>m <sub>"+i.toString()+"</sub> : </td><td>"
+	     			res+="<tr id='m"+i+"' name='m"+i+"' query=''><td>m <sub>"+i+"</sub> : </td><td>"
 	     			j=0;
 	     			aux=combinaciones[i];
 	     			while(j<aux2){
@@ -508,7 +509,7 @@
 	     			$("#mini").attr("frag",i);
 	     			i=0;
 	     			while(i<cLen){
-	     				$("#m"+i.toString()).attr("query",queries[i]);
+	     				$("#m"+i).attr("query",queries[i]);
 	     				i++;
 	     			}
 	     		}
@@ -524,8 +525,82 @@
 	
 	    
      });
-	 $('#comprobarM').on("click",function(){
+	 $('#ComprobarM').on("click",function(){
+	 	var n=$("#mini").attr("frag");
+	 	var i=0;
+	 	var j=0;
+	 	var pLen=0;
+	 	var aux=[];
+	 	var val=false;
+	 	var comprueba="";
+	 	var queryBuilder="";
+	 	var queries=[];
+	 	var predicados = [];
+	 	var queriesHasP = {};
 
+	 	while(i<n){
+	 		queries.push($("#m"+i).attr("query"));
+	 		predicados=queries[i].split("^");
+	 		j = 0;
+	 		pLen=predicados.length;
+	 		queryBuilder="";
+	 		while(j<pLen){
+	 			val=/[\~]+/g.test(predicados[j]);
+
+	 			if(!val){
+	 				aux=predicados[j].match(/\d+/g);
+	 				comprueba = $('#p'+aux[0]).attr('name');
+
+	     			if( comprueba != null){
+		     			auxR = $('#p'+aux[0]).attr('relacion');
+		     			auxA = $('#p'+aux[0]).attr('atributo');
+		     			auxO = $('#p'+aux[0]).attr('operador');
+		     			auxV = $('#p'+aux[0]).attr('valor');
+
+		     			if(queryBuilder.length<1){
+		     				queryBuilder="SELECT * FROM "+auxR+" WHERE "+auxA+" "+auxO+" "+auxV;
+		     			}
+		     			else{
+		     				queryBuilder+=" AND "+auxA+" "+auxO+" "+auxV;
+		     			}
+		     		}
+	 			}
+	 			else{
+	 				aux=predicados[j].match(/\d+/g);
+	 				comprueba = $('#p'+aux[0]).attr('name');
+	     			if( comprueba != null){
+		     			auxR = $('#p'+aux[0]).attr('relacion');
+		     			auxA = $('#p'+aux[0]).attr('atributo');
+		     			auxO = $('#p'+aux[0]).attr('operador');
+		     			auxV = $('#p'+aux[0]).attr('valor');
+
+		     			if(auxO==">")
+		     				auxO="<=";
+		     			else if(auxO=="<")
+		     				auxO=">=";
+		     			else if(auxO=="<=")
+		     				auxO=">";
+		     			else if(auxO==">=")
+		     				auxO="<";
+		     			else if(auxO=="=")
+		     				auxO="!=";	
+		     			else 
+		     				auxO="=";
+
+		     			if(queryBuilder.length<1){
+		     				queryBuilder="SELECT * FROM "+auxR+" WHERE "+auxA+" "+auxO+" "+auxV;
+		     			}
+		     			else{
+		     				queryBuilder+=" AND "+auxA+" "+auxO+" "+auxV;
+		     			}
+		     		}
+		     		console.log(queryBuilder);
+	 			}
+	 			j++;
+	 		}
+
+	 		i++;
+	 	}
 	 });
 
 });

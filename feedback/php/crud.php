@@ -43,7 +43,7 @@
 
         
         $(document).ready(function() {
-
+      $("#fragVert").hide( );
 
         $('select').material_select();
 
@@ -409,7 +409,7 @@ $("#fragVid").click(function(e) {
           </div>
         </div>
         
-        
+
         <br>
         <br>
         	<div class="row">
