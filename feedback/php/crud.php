@@ -282,7 +282,7 @@ $("#fragVid").click(function(e) {
                   </div>
                   <label for='valor' class="white-text">Ingrese el valor:</label></div>
                 <div class="col s12 l12"> 
-                  <div id="agregarPredic" class="btn deep-purple darken-2 white-text" predicados="0"> Agregar predicado </div>
+                  <div id="agregarPredic" class="btn deep-purple darken-2 white-text" predicados="0" n ="0"> Agregar predicado </div>
                 </div>
 
             </div>
@@ -298,6 +298,19 @@ $("#fragVid").click(function(e) {
               </table>
               <br>
               <div id="ComprobarM" class="btn teal darken-4 white-text"> Comprobar F.M.</div>
+            <br>
+            <br>
+              <div class="input-field col l6 s12">
+                  <select id="sitio" name="sitio" class="white-text">
+                    <option class='white-text' value="" disabled selected>Escoja el sitio a colocar los fragmentos</option>
+                    <option class='white-text' value='Juel'>Juel</option>
+                    <option class='white-text' value='Bejar'>Bejar</option>
+                    <option class='white-text' value='Karlita'>Karlita</option>
+                  </select>
+                  <label class="white-text">Sitios:</label>
+              </div>
+            <br>
+              <div id="colocar" class="btn amber darken-2 black-text">Colocar en sitio</div>
             </div>
           </div>
         </div>
@@ -405,6 +418,19 @@ $("#fragVid").click(function(e) {
               </table>
               <br>
               <div id="ComprobarMV" class="btn teal darken-4 white-text"> Comprobar F.M.</div>
+              <br>
+              <br>
+              <div class="input-field col s12 l6">
+                  <select id="sitio" name="sitio" class="white-text">
+                    <option class='white-text' value="" disabled selected>Escoja el sitio a colocar los fragmentos</option>
+                    <option class='white-text' value='Juel'>Juel</option>
+                    <option class='white-text' value='Bejar'>Bejar</option>
+                    <option class='white-text' value='Karlita'>Karlita</option>
+                  </select>
+                  <label class="white-text">Sitios:</label>
+              </div>
+              <br>
+              <div id="colocarV" class="btn amber darken-2 black-text" queries="">Colocar en sitio</div>
             </div>
           </div>
         </div>

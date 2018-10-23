@@ -35,9 +35,12 @@
 		      	if(!/[1-9]+/i.test(res)){
 		      		alert('Su predicado #'+i+" esta mal. Por lo tanto, se eliminará.\nPuede agregar más predicados o en todo caso dar click en 'Generar F.M.' de nuevo.");
 		      		val == false;
+		      		$('#agregarPredic').attr('n',parseInt($('#agregarPredic').attr('n'))-1);
 		      		$(aux).replaceWith("");
 		      	}
-		      }
+		      },
+		      async: false
+
 		    });
  	  	return val;
  	  }
@@ -381,6 +384,7 @@
 
           			$('#mostrarPredicados').append("<tr id='p"+p.toString()+"' name='p"+p.toString()+"' numero='"+p.toString()+"' relacion='"+r+"' atributo='"+dec+"' operador='"+o+"' valor='"+vBefore+"'><td><b>p <sub>"+p.toString()+" :</sub></b></td><td><b>"+r+"</b></td><td> "+dec+" "+o+" "+v+"</td></tr>");
           			$('#agregarPredic').attr('predicados',p+1);
+          			$('#agregarPredic').attr('n',p+1);
         		}
 
           	}
@@ -413,8 +417,10 @@
 	     		i++;
 	     	}
 	     	var noDeCombi=$("#numeroP").val();
-
+	     	p = parseInt($('#agregarPredic').attr('n'));
+	     	console.log(p);
 	     	if(noDeCombi>p || noDeCombi<2){
+
 	     		if(noDeCombi>p)
 	     			alert("Ingrese más predicados antes de hacer los minitérminos.");
 	     		else
@@ -536,70 +542,117 @@
 	 	var queryBuilder="";
 	 	var queries=[];
 	 	var predicados = [];
-	 	var queriesHasP = {};
+	 	var built_queries = [];
+		var pre = parseInt($("#agregarPredic").attr("n"));
+		var numeroP = parseInt($("#numeroP").val());
 
-	 	while(i<n){
-	 		queries.push($("#m"+i).attr("query"));
-	 		predicados=queries[i].split("^");
-	 		j = 0;
-	 		pLen=predicados.length;
-	 		queryBuilder="";
-	 		while(j<pLen){
-	 			val=/[\~]+/g.test(predicados[j]);
+		if(pre >= numeroP){
+					 	while(i<n){
+		 		queries.push($("#m"+i).attr("query"));
+		 		predicados=queries[i].split("^");
+		 		j = 0;
+		 		pLen=predicados.length;
+		 		queryBuilder="";
+		 		while(j<pLen){
+		 			val=/[\~]+/g.test(predicados[j]);
+	
+		 			if(!val){
+		 				aux=predicados[j].match(/\d+/g);
+		 				comprueba = $('#p'+aux[0]).attr('name');
+	
+		     			if( comprueba != null){
+			     			auxR = $('#p'+aux[0]).attr('relacion');
+			     			auxA = $('#p'+aux[0]).attr('atributo');
+			     			auxO = $('#p'+aux[0]).attr('operador');
+			     			auxV = $('#p'+aux[0]).attr('valor');
+	
+			     			if(queryBuilder.length<1){
+			     				queryBuilder="SELECT * FROM "+auxR+" WHERE "+auxA+" "+auxO+" "+auxV;
+			     			}
+			     			else{
+			     				queryBuilder+=" AND "+auxA+" "+auxO+" "+auxV;
+			     			}
+			     		}
+		 			}
+		 			else{
+		 				aux=predicados[j].match(/\d+/g);
+		 				comprueba = $('#p'+aux[0]).attr('name');
+		     			if( comprueba != null){
+			     			auxR = $('#p'+aux[0]).attr('relacion');
+			     			auxA = $('#p'+aux[0]).attr('atributo');
+			     			auxO = $('#p'+aux[0]).attr('operador');
+			     			auxV = $('#p'+aux[0]).attr('valor');
+	
+			     			if(auxO==">")
+			     				auxO="<=";
+			     			else if(auxO=="<")
+			     				auxO=">=";
+			     			else if(auxO=="<=")
+			     				auxO=">";
+			     			else if(auxO==">=")
+			     				auxO="<";
+			     			else if(auxO=="=")
+			     				auxO="!=";	
+			     			else 
+			     				auxO="=";
+	
+			     			if(queryBuilder.length<1){
+			     				queryBuilder="SELECT * FROM "+auxR+" WHERE "+auxA+" "+auxO+" "+auxV;
+			     			}
+			     			else{
+			     				queryBuilder+=" AND "+auxA+" "+auxO+" "+auxV;
+			     			}
+			     		}
+		 			}
+		 			j++;
+	
+		 		}
+		 		built_queries.push(queryBuilder);
+		 		i++;
+		 	}
+		 	var q = built_queries.join('$;');
+	
+		 	$.ajax({
+			    method:"post",
+			      url:"comprobarM.php",
+			      cache:false,
+			      data:{queries:q},
+			      success: function(respAX){
+			      	var res = respAX.split(","); 
+					var i = 0;
+					var rLen = res.length;
+					var auxM = 0;
+					while(i<rLen){
+						auxM=parseInt(res[i]);
+						if(i==(rLen-1)){
+							if(auxM==1){
+								alert("Sus minitérminos son completos. Están listos para colocar en los sitios");
+							}
+							else{
+								alert("Sus minitérminos no son completos. Pruebe agregando más.");
+							}
+						}
+						else{
+							alert("El minitermino #"+auxM+" no es mínimo. Por lo tanto se eliminará");
+							$("#m"+auxM).replaceWith("");
+						}
+						i++;
+					}
+						
+			    }
+			});
 
-	 			if(!val){
-	 				aux=predicados[j].match(/\d+/g);
-	 				comprueba = $('#p'+aux[0]).attr('name');
+		}
+		else{
+			alert("Agregue más predicados antes de comprobar los miniterminos");
+		}
+	 });
 
-	     			if( comprueba != null){
-		     			auxR = $('#p'+aux[0]).attr('relacion');
-		     			auxA = $('#p'+aux[0]).attr('atributo');
-		     			auxO = $('#p'+aux[0]).attr('operador');
-		     			auxV = $('#p'+aux[0]).attr('valor');
 
-		     			if(queryBuilder.length<1){
-		     				queryBuilder="SELECT * FROM "+auxR+" WHERE "+auxA+" "+auxO+" "+auxV;
-		     			}
-		     			else{
-		     				queryBuilder+=" AND "+auxA+" "+auxO+" "+auxV;
-		     			}
-		     		}
-	 			}
-	 			else{
-	 				aux=predicados[j].match(/\d+/g);
-	 				comprueba = $('#p'+aux[0]).attr('name');
-	     			if( comprueba != null){
-		     			auxR = $('#p'+aux[0]).attr('relacion');
-		     			auxA = $('#p'+aux[0]).attr('atributo');
-		     			auxO = $('#p'+aux[0]).attr('operador');
-		     			auxV = $('#p'+aux[0]).attr('valor');
-
-		     			if(auxO==">")
-		     				auxO="<=";
-		     			else if(auxO=="<")
-		     				auxO=">=";
-		     			else if(auxO=="<=")
-		     				auxO=">";
-		     			else if(auxO==">=")
-		     				auxO="<";
-		     			else if(auxO=="=")
-		     				auxO="!=";	
-		     			else 
-		     				auxO="=";
-
-		     			if(queryBuilder.length<1){
-		     				queryBuilder="SELECT * FROM "+auxR+" WHERE "+auxA+" "+auxO+" "+auxV;
-		     			}
-		     			else{
-		     				queryBuilder+=" AND "+auxA+" "+auxO+" "+auxV;
-		     			}
-		     		}
-		     		console.log(queryBuilder);
-	 			}
-	 			j++;
-	 		}
-
-	 		i++;
+	 $("#colocar").on("click",function(){
+	 	var val=parseInt($("#mini").attr("frag"));
+	 	if( val == 0 ){
+	 		alert("Agregue miniterminos antes de enviar al sitio");
 	 	}
 	 });
 

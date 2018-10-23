@@ -8,5 +8,5 @@
 	$regEst = "";
 	$a=0;
 	while($filas = mysqli_fetch_array($resEst,MYSQLI_BOTH)){
-		echo $filas[0]
+		echo $filas[0];
 	}
