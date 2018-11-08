@@ -25,6 +25,7 @@
 	} 
 	$usrBD = str_replace(["\r\n", "\r", "\n"], '',$newU);
 	$passBD = str_replace(["\r\n", "\r", "\n"], '',$newP);
+	
 	/*
 	echo "serv: ".$servBD."\n";
 	echo "user: ".$usrBD."\n";

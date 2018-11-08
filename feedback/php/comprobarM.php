@@ -22,7 +22,7 @@
 		$rows[$row[0]]=False;
 	}
 
-	$m = []
+	$inf=0;
 	while($i<$qLen){
 		$res = mysqli_query($conexion, $queries[$i]);
 	
@@ -34,7 +34,6 @@
 		$inf= mysqli_num_rows($res);
 		if($inf<1)
 			echo "{$i},";
-		
 		$i=$i+1;
 	}
 

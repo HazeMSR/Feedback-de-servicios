@@ -305,7 +305,7 @@ $("#fragVid").click(function(e) {
                     <option class='white-text' value="" disabled selected>Escoja el sitio a colocar los fragmentos</option>
                     <option class='white-text' value='Juel'>Juel</option>
                     <option class='white-text' value='Bejar'>Bejar</option>
-                    <option class='white-text' value='Karlita'>Karlita</option>
+                    <option class='white-text' value='Hazel'>Hazel</option>
                   </select>
                   <label class="white-text">Sitios:</label>
               </div>
@@ -362,7 +362,7 @@ $("#fragVid").click(function(e) {
                 <div class="row">
                   <div class="col s12 l12 input-field">
                     <label for="numeroPV" class="white-text">N&uacute;mero de predicados por minit&eacute;rminos:</label>
-                    <input type="number" id="numeroPV" name="numeroPv" value="2" min="2">
+                    <input type="number" id="numeroPV" name="numeroPV" value="2" min="2">
                   </div>
                 </div>                
 

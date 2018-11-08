@@ -1,5 +1,87 @@
  $(document).ready(function() {
-
+ 	function getQueries(n){
+	 	var i=0;
+	 	var j=0;
+	 	var pLen=0;
+	 	var aux=[];
+	 	var val=false;
+	 	var comprueba="";
+	 	var queryBuilder="";
+	 	var queries=[];
+	 	var predicados = [];
+	 	var built_queries = [];
+ 		while(i<n){
+ 			console.log("i= "+i+" n = "+n);
+ 			var auxM=$("#m"+i).attr("query");
+ 			queries.push(auxM);
+		 	
+ 			if(typeof auxM !== "undefined" && auxM !== false && auxM !== null){
+ 				console.log("auxM="+auxM);
+ 			
+ 				predicados=queries[i].split("^");
+		 		j = 0;
+		 		pLen=predicados.length;
+		 		queryBuilder="";
+		 		while(j<pLen){
+		 			val=/[\~]+/g.test(predicados[j]);
+	
+		 			if(!val){
+		 				aux=predicados[j].match(/\d+/g);
+		 				comprueba = $('#p'+aux[0]).attr('name');
+	
+		     			if( comprueba != null){
+			     			auxR = $('#p'+aux[0]).attr('relacion');
+			     			auxA = $('#p'+aux[0]).attr('atributo');
+			     			auxO = $('#p'+aux[0]).attr('operador');
+			     			auxV = $('#p'+aux[0]).attr('valor');
+	
+			     			if(queryBuilder.length<1){
+			     				queryBuilder="SELECT * FROM "+auxR+" WHERE "+auxA+" "+auxO+" "+auxV;
+			     			}
+			     			else{
+			     				queryBuilder+=" AND "+auxA+" "+auxO+" "+auxV;
+			     			}
+			     		}
+		 			}
+		 			else{
+		 				aux=predicados[j].match(/\d+/g);
+		 				comprueba = $('#p'+aux[0]).attr('name');
+		     			if( comprueba != null){
+			     			auxR = $('#p'+aux[0]).attr('relacion');
+			     			auxA = $('#p'+aux[0]).attr('atributo');
+			     			auxO = $('#p'+aux[0]).attr('operador');
+			     			auxV = $('#p'+aux[0]).attr('valor');
+	
+			     			if(auxO==">")
+			     				auxO="<=";
+			     			else if(auxO=="<")
+			     				auxO=">=";
+			     			else if(auxO=="<=")
+			     				auxO=">";
+			     			else if(auxO==">=")
+			     				auxO="<";
+			     			else if(auxO=="=")
+			     				auxO="!=";	
+			     			else 
+			     				auxO="=";
+	
+			     			if(queryBuilder.length<1){
+			     				queryBuilder="SELECT * FROM "+auxR+" WHERE "+auxA+" "+auxO+" "+auxV;
+			     			}
+			     			else{
+			     				queryBuilder+=" AND "+auxA+" "+auxO+" "+auxV;
+			     			}
+			     		}
+		 			}
+		 			j++;
+	
+		 		}
+		 		built_queries.push(queryBuilder);
+		 	}
+		 		i++;
+		 	}
+		 return built_queries;
+ 	}
  	function dec2bin(dec){
     	return (dec >>> 0).toString(2);
 	}
@@ -533,83 +615,12 @@
      });
 	 $('#ComprobarM').on("click",function(){
 	 	var n=$("#mini").attr("frag");
-	 	var i=0;
-	 	var j=0;
-	 	var pLen=0;
-	 	var aux=[];
-	 	var val=false;
-	 	var comprueba="";
-	 	var queryBuilder="";
-	 	var queries=[];
-	 	var predicados = [];
 	 	var built_queries = [];
 		var pre = parseInt($("#agregarPredic").attr("n"));
 		var numeroP = parseInt($("#numeroP").val());
 
 		if(pre >= numeroP){
-					 	while(i<n){
-		 		queries.push($("#m"+i).attr("query"));
-		 		predicados=queries[i].split("^");
-		 		j = 0;
-		 		pLen=predicados.length;
-		 		queryBuilder="";
-		 		while(j<pLen){
-		 			val=/[\~]+/g.test(predicados[j]);
-	
-		 			if(!val){
-		 				aux=predicados[j].match(/\d+/g);
-		 				comprueba = $('#p'+aux[0]).attr('name');
-	
-		     			if( comprueba != null){
-			     			auxR = $('#p'+aux[0]).attr('relacion');
-			     			auxA = $('#p'+aux[0]).attr('atributo');
-			     			auxO = $('#p'+aux[0]).attr('operador');
-			     			auxV = $('#p'+aux[0]).attr('valor');
-	
-			     			if(queryBuilder.length<1){
-			     				queryBuilder="SELECT * FROM "+auxR+" WHERE "+auxA+" "+auxO+" "+auxV;
-			     			}
-			     			else{
-			     				queryBuilder+=" AND "+auxA+" "+auxO+" "+auxV;
-			     			}
-			     		}
-		 			}
-		 			else{
-		 				aux=predicados[j].match(/\d+/g);
-		 				comprueba = $('#p'+aux[0]).attr('name');
-		     			if( comprueba != null){
-			     			auxR = $('#p'+aux[0]).attr('relacion');
-			     			auxA = $('#p'+aux[0]).attr('atributo');
-			     			auxO = $('#p'+aux[0]).attr('operador');
-			     			auxV = $('#p'+aux[0]).attr('valor');
-	
-			     			if(auxO==">")
-			     				auxO="<=";
-			     			else if(auxO=="<")
-			     				auxO=">=";
-			     			else if(auxO=="<=")
-			     				auxO=">";
-			     			else if(auxO==">=")
-			     				auxO="<";
-			     			else if(auxO=="=")
-			     				auxO="!=";	
-			     			else 
-			     				auxO="=";
-	
-			     			if(queryBuilder.length<1){
-			     				queryBuilder="SELECT * FROM "+auxR+" WHERE "+auxA+" "+auxO+" "+auxV;
-			     			}
-			     			else{
-			     				queryBuilder+=" AND "+auxA+" "+auxO+" "+auxV;
-			     			}
-			     		}
-		 			}
-		 			j++;
-	
-		 		}
-		 		built_queries.push(queryBuilder);
-		 		i++;
-		 	}
+			built_queries = getQueries(n);
 		 	var q = built_queries.join('$;');
 	
 		 	$.ajax({
@@ -618,6 +629,7 @@
 			      cache:false,
 			      data:{queries:q},
 			      success: function(respAX){
+			      	console.log(respAX);
 			      	var res = respAX.split(","); 
 					var i = 0;
 					var rLen = res.length;
@@ -654,6 +666,51 @@
 	 	if( val == 0 ){
 	 		alert("Agregue miniterminos antes de enviar al sitio");
 	 	}
+	 	else{
+	 		var sitio=$("#sitio").val();
+	 		var servidor="";
+	 		var usuario="";
+	 		var pass="";
+	 		var bd="feedback";
+
+	 		if(sitio == "Bejar"){
+
+	 		}
+	 		else if(sitio=="Juel"){
+	 			servidor="?.?.?.?";
+	 			usuario="?"
+	 			pass="?"
+	 		}
+	 		else{
+	 			servidor="localhost";
+	 			usuario="root"
+	 			pass="n0m3l0"
+	 		}
+
+	 		var n=$("#mini").attr("frag");
+	 		var built_queries = [];
+			var pre = parseInt($("#agregarPredic").attr("n"));
+			var numeroP = parseInt($("#numeroP").val());
+
+			if(pre >= numeroP){
+				built_queries = getQueries(n);
+			 	var q = built_queries.join('$;');
+			 	$.ajax({
+				    method:"post",
+				      url:"colocarFrag.php",
+				      cache:false,
+				      data:{sitio:sitio,servidor:servidor,usuario:usuario,pass:pass,bd:bd,tipoFrag:"H",queries:q},
+				      success: function(respAX){
+				      	console.log(respAX);
+							
+				    }
+				});
+
+	 		}
+	 		else{
+				alert("Agregue más predicados antes de comprobar los miniterminos");
+			}
+		}
 	 });
 
 });
