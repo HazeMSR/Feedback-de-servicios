@@ -197,12 +197,13 @@ $("#fragVid").click(function(e) {
               <div id="fragVid" class="col s12 m12 l6"><h2 id="fragVH2" class="center-align light-green accent-3  light-green-text z-depth-3 ">Fragmentaci&oacute;n Vertical</h2></div>
           </div>
         <div id="fragHoriz">
-
+<!-------------------------------------- FRAGMENTACIÓN HORIZONTAL  -------------------------------------->
           <br>
           <br>
           <div class="row center">
 
             <div class=" col s12 m12 l6">
+<!----------------------------------------------- PASO 1 ------------------------------------------------->
               <h4 class="center-align white-text">1) Definir condiciones de fragmentaci&oacute;n</h4>
               <br>
               <h5 class="left-align">Leer esquema:</h5>
@@ -220,6 +221,7 @@ $("#fragVid").click(function(e) {
 
                 </div>
             </div>
+<!----------------------------------------------- PASO 3 ------------------------------------------------->
             <div class="col s12 m12 l6">
               <h4 class="center-align white-text">3) Generar fragmentos minit&eacute;rminos</h4>
               <br>
@@ -251,6 +253,7 @@ $("#fragVid").click(function(e) {
             </div>
           </div>
           <br>
+<!----------------------------------------------- PASO 2 ------------------------------------------------->
           <div class="row center">
             <div class="col s12 m12 l6">
               <h4 class="center-align white-text">2) Definir predicados simples</h4>
@@ -286,6 +289,8 @@ $("#fragVid").click(function(e) {
                 </div>
 
             </div>
+
+<!----------------------------------------------- PASO 4 ------------------------------------------------->
             <div class="col s12 m12 l6">
               <h4 class="center-align white-text">4) Colocar fragmentos minit&eacute;rminos</h4>
               <table class="centered responsive-table black ">
@@ -315,7 +320,7 @@ $("#fragVid").click(function(e) {
           </div>
         </div>
 
-
+<!----------------------------------------------- FRAGMENTACIÓN VERTICAL ------------------------------------------------->
         <div id="fragVert">
 
           <br>

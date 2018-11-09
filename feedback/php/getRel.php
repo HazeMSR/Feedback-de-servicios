@@ -1,9 +1,14 @@
 <?php
 	include("configBD.php");
 	include("getPosts.php");
-	
+
+//Del Paso 1)
+//Obtiene los parámetros mandados por el AJAX en fragHoriz
+
 	$relacion = $_POST["rel"];
 	$val = (int) $_POST["val"];
+
+
 	$rLen = 0;
 
 	if($val == 0){
@@ -12,7 +17,7 @@
 		
 		$regEst = "";
 	
-		while($filas = mysqli_fetch_array($resEst,MYSQLI_BOTH)){
+		while($filas = mysqli_fetch_array($resEst,MYSQLI_BOTH)){ // REALIZA EL QUERY PARA OBTENER LOS ATRIBUTOS DE LA TABLA
 			$regEst =$filas[1];
 		}
 	

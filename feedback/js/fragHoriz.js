@@ -1,4 +1,5 @@
  $(document).ready(function() {
+ 	// Obtiene la relación, el atributo, el operador y el valor para construir los queries de la tabla del paso 4
  	function getQueries(n){
 	 	var i=0;
 	 	var j=0;
@@ -82,9 +83,11 @@
 		 	}
 		 return built_queries;
  	}
+ 	//Convierte de decimal a binario y de binario a String para las combinaciones de los minitérminos
  	function dec2bin(dec){
     	return (dec >>> 0).toString(2);
 	}
+	//Agrega padding a un número binario
 	function addPadding(number,pad){
 		var i=0;
 		var ret="";
@@ -95,6 +98,7 @@
 		ret += number.toString();
 		return ret;
 	}
+	// Comprueba si hay datos repetidos en un array
 	function compruebaRepetidos(arr,elem){
 		var i=0;
 		var len= arr.length;
@@ -106,6 +110,8 @@
 		}
 		return false;
 	}
+	// Realiza el post para mandar el AJAX al php generarFM.php para comprobar si los predicados ingresados están bien (Comprueba Empty set)
+	// De lo contrario los elimina.
  	  function compruebaFM(aux,i,p,auxR,auxA,auxO,auxV){
  	  	var val=true;
  	  	$.ajax({
@@ -126,6 +132,7 @@
 		    });
  	  	return val;
  	  }
+ 	  // Para la función PRINCIPAL del paso 2: Convierte el dato de entrada a entero
  	  function getNumero(a){
         var inicio = a.search(/\({1}\d+\){1}/g);
         var val = true;
@@ -137,6 +144,8 @@
         }
         return parseInt(dec);
       }
+      // Para la función PRINCIPAL del paso 2: Convierte el dato de entrada a un formato aceptable para el tipo de dato decimal,
+      // ademas devuelve el número de pasos que debe realizar el navegador para validar una correcta inserción de datos.
       function getDecimal(a){
         var inicio = a.search(/[,]{1}|\({1}\d+\){1}/g);
         var val = true;
@@ -156,7 +165,7 @@
         var ret = [decI,pasos]
         return ret;
       }
-
+      //Para la función PRINCIPAL del paso 2: Obtiene el rango para un tipo de dato que acepta dos parámetros en mysql y lo valida 
       function getEntero(a,d){
         var inicio = a.search(/\({1}\d+[,]{1}/g);
         var val = true;
@@ -175,6 +184,8 @@
         }
         return rango;
       }
+// Para la función PRINCIPAL del paso 2: ésta función comprueba si algún predicado ya se ha ingresado previamente para evitar que se agregue de nuevo 
+// a la tabla del paso 3
       function validaRepetido(p,r,dec,o,v){
       	var i=0;
       	var auxR="";
@@ -197,6 +208,10 @@
       	return false;
       }
 
+//DEL PASO 2
+//Obtiene los valores del atributo, el operador y el valor del predicado simple, dado por el usuario
+//Esto también verifica el tipo de dato de MySQL
+//Valida si el tipo de dato es valido con el operador dado
         $('#atributo').on("change",function(){
           var a =$('#atributosel').val();
           var pat = /([i]{1}[n]{1}[t]{1})|([f]{1}[l]{1}[o]{1}[a]{1}[t]{1})|([d]{1}[e]{1}[c]{1}[i]{1}[m]{1}[a]{1}[l]{1})|([d]{1}[o]{1}[u]{1}[b]{1}[l]{1}[e]{1})|([b]{1}[i]{1}[t]{1})|([d]{1}[a]{1}[t]{1}[e]{1})|([t]{1}[i]{1}[m]{1}[e]{1})|([y]{1}[e]{1}[a]{1}[r]{1})/i.test(a);
@@ -376,6 +391,8 @@
                $('select').material_select()
         });
 
+ //     Del Paso 1)
+ //     Esta función es la que obtiene los atributos de la tabla seleccionada
 
       $("#relacion").on("change",function(){
         $.ajax({
@@ -413,7 +430,7 @@
          });
       });
 
-
+//Continuando con el Paso 2: Comprueba que no haya predicados repetidos y los agrega a la tabla del Paso 3)
         $("#agregarPredic").on("click",function(){
           var r =$('#relacion').val();
           var a =$('#atributosel').val();
@@ -475,6 +492,12 @@
           
         });
 
+
+//		DEL PASO 3)   
+//		Obtiene la relación, el atributo, operador y el valor para construir el query que se ejecutará en MySQL.
+// 		También realiza las combinaciones de los predicados para formar los minitérminos (En sus formas positivas y negadas)
+// 		según el número de predicados por minitérminos que se ingrese, y los agrega a la tabla del paso 4)
+
      $('#generarFM').on("click",function(){
      	var p = parseInt($('#agregarPredic').attr('predicados'));
      	var i = 0;
@@ -493,7 +516,6 @@
 		     		auxA = $(aux).attr('atributo');
 		     		auxO = $(aux).attr('operador');
 		     		auxV = $(aux).attr('valor');
-
 		     		val = compruebaFM(aux,i,p,auxR,auxA,auxO,auxV);		     			
 	     		}	
 	     		i++;
@@ -539,8 +561,7 @@
 					pre.push(null);
 
 					do{
-	     				rand=Math.floor((Math.random() * p) + 0);
-
+	     				rand = Math.floor((Math.random() * p) + 0);
 	     				val = compruebaRepetidos(pre,rand);
 
 	     				if(!val)
@@ -608,11 +629,12 @@
 	     	}
 
      	}
-
-	    else{alert('No hay ningun predicado, por favor agregue enunciados.');}
-	
-	    
+	    else{alert('No hay ningun predicado, por favor agregue enunciados.');}	
      });
+
+//		DEL PASO 4)
+// 		Esta funcion obtiene los fragmentos minitérminos de la tabla, obtiene el query de la función getQuery() en este mismo archivo en la línea 1
+// 		y manda el conjunto de queries a un php (comprobarM.php)
 	 $('#ComprobarM').on("click",function(){
 	 	var n=$("#mini").attr("frag");
 	 	var built_queries = [];
@@ -660,7 +682,10 @@
 		}
 	 });
 
-
+//	Continuando del paso 4: coloca en el sitio especificado por el usuario (Hazel,Juel o Bejar)
+//	Obtiene los minitérminos que cumplieron la regla de completitud y minimalidad
+// Realizamos casi el mismo proceso realizado en la función ComprobarM (linea 625), sólo que ahora no vamos a comprobar 
+// si es mínimo ni completo, pero se manda los datos a colocarFrag.php
 	 $("#colocar").on("click",function(){
 	 	var val=parseInt($("#mini").attr("frag"));
 	 	if( val == 0 ){
