@@ -699,6 +699,10 @@
 	 		var bd="feedback";
 
 	 		if(sitio == "Bejar"){
+	 			servidor="?.?.?.?";
+	 			usuario="?"
+	 			pass="?"
+
 
 	 		}
 	 		else if(sitio=="Juel"){

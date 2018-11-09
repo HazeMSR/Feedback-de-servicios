@@ -23,7 +23,7 @@
 	$query = "SELECT * FROM fragmentos WHERE servidor='$sitio'";
 	$res = mysqli_query($conexion, $query);
 	$row = mysqli_fetch_array($res,MYSQLI_BOTH);
-	echo $row[0];
+//	echo $row[0];
 	$noF = 0;
 
 	if($tipoFrag[0]=="H"){
@@ -40,26 +40,32 @@
 	preg_match_all("/F{1}R{1}O{1}M{1}\s+(.*?)+\s+W{1}H{1}E{1}R{1}E{1}/", $queries[0], $result_array);
 	$tabla= $result_array[0][0];
 	$tabla = preg_replace("/(F{1}R{1}O{1}M{1}\s+)|(\s+W{1}H{1}E{1}R{1}E{1})/", "", $tabla);
-	echo $tabla;
+//	echo $tabla;
 
 //Obtiene el query para crear la nueva tabla
 
 	$query2 = "SHOW CREATE TABLE $tabla";
 	$res2 = mysqli_query($conexion, $query2);
 	$row2 = mysqli_fetch_array($res2,MYSQLI_BOTH);
-	echo "\nSHOW CREATE TABLE\n";
+/*	echo "\nSHOW CREATE TABLE\n";
 	echo $row2[1];
 	echo "\n";
+*/
 
 //Crea el nombre y el query de la nueva tabla	
-	$newTabla = "Fragmento".$tipoFrag[0].$noF;
 
+	$newTabla = "Fragmento".$tipoFrag[0].$noF;
 	$query3 = preg_replace("/CREATE TABLE [\`]*(.*?)[\`]* [\(]/", "CREATE TABLE `$newTabla` (", $row2[1]);
+	preg_match_all("/CONSTRAINT `(.*?)`/", $query3, $result_array);
+	$constr= $result_array[0][0];
+	$constr = preg_replace("/(CONSTRAINT `)|(`)/", "", $constr);
+	$query3 = preg_replace("/CONSTRAINT `(.*?)`/", "CONSTRAINT `".$constr."$noF`", $query3);
 	echo $query3;
 	$res3 = mysqli_query($conexion, $query3);
 
 
 //Inserta los valores obtenidos de los fragmentos minitérminos en la nueva tabla creada
+/*
 	$i=0;
 	$inf = 1;
 	$err = [];
@@ -75,6 +81,7 @@
 
 		$i+=1;
 	}
+*/
 //Aumenta en 1 el valor de los fragmentos para la generación de la proxima tabla
 	if($tipoFrag[0]=="H"){
 		$sqlUpd = "UPDATE fragmentos SET fragmentosH = ".($noF+1)." WHERE servidor = '$sitio'" ;
@@ -89,7 +96,8 @@
 	$resUpd = mysqli_query($conexion, $sqlUpd);
 
 //Regresa ok o los errores que se generaron
-	if ($inf<1)
+/*	if ($inf<1)
 		echo $err;
 	else
 		echo "ok";
+*/
