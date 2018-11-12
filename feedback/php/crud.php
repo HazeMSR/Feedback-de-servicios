@@ -328,6 +328,7 @@ $("#fragVid").click(function(e) {
           <div class="row center">
 
             <div class=" col s12 m12 l6">
+<!------------------------------------------------------- PASO 1 ------------------------------------------------------>
               <h4 class="center-align white-text">1) Definir condiciones de fragmentaci&oacute;n</h4>
               <br>
               <h5 class="left-align">Leer esquema:</h5>
@@ -344,9 +345,14 @@ $("#fragVid").click(function(e) {
                 <div id="tablaV">
 
                 </div>
+                <h4 class="center-align white-text">2) Definir n&uacute;mero de fragmentos</h4>
+                 <div class="col s12 l12 input-field">
+                    <label for="numeroPV" class="white-text">N&uacute;mero de fragmentos:</label>
+                    <input type="number" id="numeroPV" name="numeroPV" value="2" min="2">
+                  </div>
             </div>
             <div class="col s12 m12 l6">
-              <h4 class="center-align white-text">3) Generar fragmentos minit&eacute;rminos</h4>
+              <h4 class="center-align white-text">4)Expresiones algebraicas</h4>
               <br>
                 <table class='centered responsive-table black'>
                   <thead>
@@ -364,67 +370,20 @@ $("#fragVid").click(function(e) {
                   </tbody>
                 </table>
 
-                <div class="row">
-                  <div class="col s12 l12 input-field">
-                    <label for="numeroPV" class="white-text">N&uacute;mero de predicados por minit&eacute;rminos:</label>
-                    <input type="number" id="numeroPV" name="numeroPV" value="2" min="2">
-                  </div>
-                </div>                
-
-                  <div id="generarFMV" class="btn blue darken-4 white-text" predicados="0"> Generar F.M.</div>
-
             </div>
           </div>
           <br>
           <div class="row center">
             <div class="col s12 m12 l6">
-              <h4 class="center-align white-text">2) Definir predicados simples</h4>
-
-                  <h5 class="left-align">
-                    Atributo:
-                  </h5>
-
-                  <div id="atributoV">
-              
-                  </div>
-
-                  <h5 class="left-align">
-                    Operador:
-                  </h5>
-
-                  <div id="operadorV">
-              
-                  </div>
-
-                  <h5 class="left-align">
-                    Valor:
-                  </h5>
-
-                  <div class='input-field col s12'>
-                  <div id="valorV">
-                    
-
-                  </div>
-                  <label for='valor' class="white-text">Ingrese el valor:</label></div>
-                <div class="col s12 l12"> 
-                  <div id="agregarPredicV" class="btn deep-purple darken-2 white-text" predicados="0"> Agregar predicado </div>
-                </div>
-
+              <h4 class="center-align white-text">3) Seleccionar atributos</h4>
+                  <h4 class="left-align">
+                    Atributos:
+                  </h4>
+                <div id="generarF" class="btn blue darken-4 white-text" predicados="0"> Generar Fragmentos</div>
             </div>
             <div class="col s12 m12 l6">
-              <h4 class="center-align white-text">4) Colocar fragmentos minit&eacute;rminos</h4>
-              <table class="centered responsive-table black ">
-                <thead><tr>
-                  <th>ID del Fragmento:</th><th>Minit&eacute;rmino:</th>
-                </tr></thead>
-                <tbody id="miniV" val="false" frag="0">
+              <h4 class="center-align white-text">4) Colocaci&oacute;n de fragmentos</h4>
 
-                </tbody>
-              </table>
-              <br>
-              <div id="ComprobarMV" class="btn teal darken-4 white-text"> Comprobar F.M.</div>
-              <br>
-              <br>
               <div class="input-field col s12 l6">
                   <select id="sitio" name="sitio" class="white-text">
                     <option class='white-text' value="" disabled selected>Escoja el sitio a colocar los fragmentos</option>

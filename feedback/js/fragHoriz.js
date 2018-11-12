@@ -699,14 +699,14 @@
 	 		var bd="feedback";
 
 	 		if(sitio == "Bejar"){
-	 			servidor="?.?.?.?"; //IP
-	 			usuario="?"			//Usuario de Mysql (root)
-	 			pass="groot"
+	 			servidor="10.100.76.76"; //IP
+	 			usuario="equis"			//Usuario de Mysql 
+	 			pass="pass"
 	 		}
 	 		else if(sitio=="Juel"){
-	 			servidor="?.?.?.?"; //IP
-	 			usuario="?"			//Usuario de Mysql (root)
-	 			pass="?"
+	 			servidor="10.100.74.157"; //IP
+	 			usuario="hazel"			// Usuario de Mysql 
+	 			pass="pass"
 	 		}
 	 		else{
 	 			servidor="localhost";
