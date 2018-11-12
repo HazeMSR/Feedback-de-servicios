@@ -699,15 +699,13 @@
 	 		var bd="feedback";
 
 	 		if(sitio == "Bejar"){
-	 			servidor="?.?.?.?";
-	 			usuario="?"
-	 			pass="?"
-
-
+	 			servidor="?.?.?.?"; //IP
+	 			usuario="?"			//Usuario de Mysql (root)
+	 			pass="groot"
 	 		}
 	 		else if(sitio=="Juel"){
-	 			servidor="?.?.?.?";
-	 			usuario="?"
+	 			servidor="?.?.?.?"; //IP
+	 			usuario="?"			//Usuario de Mysql (root)
 	 			pass="?"
 	 		}
 	 		else{

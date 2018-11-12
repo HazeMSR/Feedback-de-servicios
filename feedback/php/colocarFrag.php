@@ -54,18 +54,26 @@
 
 //Crea el nombre y el query de la nueva tabla	
 
-	$newTabla = "Fragmento".$tipoFrag[0].$noF;
+	$newTabla = "fragmento".$tipoFrag[0].$noF;
 	$query3 = preg_replace("/CREATE TABLE [\`]*(.*?)[\`]* [\(]/", "CREATE TABLE `$newTabla` (", $row2[1]);
 	preg_match_all("/CONSTRAINT `(.*?)`/", $query3, $result_array);
-	$constr= $result_array[0][0];
-	$constr = preg_replace("/(CONSTRAINT `)|(`)/", "", $constr);
-	$query3 = preg_replace("/CONSTRAINT `(.*?)`/", "CONSTRAINT `".$constr."$noF`", $query3);
+
+	$cLen =count($result_array[0]);
+
+	$i = 0;
+	while($i<$cLen){
+		$constr= $result_array[0][$i];
+		$constr = preg_replace("/(CONSTRAINT `)|(`)/", "", $constr);
+		$query3 = preg_replace("/CONSTRAINT `$constr`/", "CONSTRAINT `".$constr."$noF`", $query3);
+		$i=$i+1;
+	}
 	echo $query3;
 	$res3 = mysqli_query($conexion, $query3);
 
 
+
 //Inserta los valores obtenidos de los fragmentos minitérminos en la nueva tabla creada
-/*
+
 	$i=0;
 	$inf = 1;
 	$err = [];
@@ -81,7 +89,7 @@
 
 		$i+=1;
 	}
-*/
+
 //Aumenta en 1 el valor de los fragmentos para la generación de la proxima tabla
 	if($tipoFrag[0]=="H"){
 		$sqlUpd = "UPDATE fragmentos SET fragmentosH = ".($noF+1)." WHERE servidor = '$sitio'" ;
@@ -96,8 +104,8 @@
 	$resUpd = mysqli_query($conexion, $sqlUpd);
 
 //Regresa ok o los errores que se generaron
-/*	if ($inf<1)
+	if ($inf<1)
 		echo $err;
 	else
 		echo "ok";
-*/
+
