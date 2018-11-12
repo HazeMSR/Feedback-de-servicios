@@ -295,7 +295,7 @@ $("#fragVid").click(function(e) {
               <h4 class="center-align white-text">4) Colocar fragmentos minit&eacute;rminos</h4>
               <table class="centered responsive-table black ">
                 <thead><tr>
-                  <th>ID del Fragmento:</th><th>Minit&eacute;rmino:</th>
+                  <th>Mandar fragmento:</th><th>ID del Fragmento:</th><th>Minit&eacute;rmino:</th>
                 </tr></thead>
                 <tbody id="mini" val="false" frag="0">
 

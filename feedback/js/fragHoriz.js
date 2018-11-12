@@ -16,8 +16,8 @@
  			var auxM=$("#m"+i).attr("query");
  			queries.push(auxM);
 		 	
- 			if(typeof auxM !== "undefined" && auxM !== false && auxM !== null){
- 				console.log("auxM="+auxM);
+ 			if(typeof auxM !== "undefined" && auxM !== false && auxM !== null && $("#checa"+i).is(':checked')){
+ 				console.log("auxM= "+auxM);
  			
  				predicados=queries[i].split("^");
 		 		j = 0;
@@ -580,7 +580,7 @@
 				var query='';
 	     		while(i<cLen){
 	     			query='';
-	     			res+="<tr id='m"+i+"' name='m"+i+"' query=''><td>m <sub>"+i+"</sub> : </td><td>"
+	     			res+="<tr id='m"+i+"' name='m"+i+"' query=''><td><input type='checkbox' id='checa"+i+"' class='filled-in' checked='checked'/><label for='checa"+i+"'>SI</label></td><td>m <sub>"+i+"</sub> : </td><td>"
 	     			j=0;
 	     			aux=combinaciones[i];
 	     			while(j<aux2){
