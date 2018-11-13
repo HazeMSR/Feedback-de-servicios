@@ -65,7 +65,7 @@
 			     				auxO="!=";	
 			     			else 
 			     				auxO="=";
-	
+
 			     			if(queryBuilder.length<1){
 			     				queryBuilder="SELECT * FROM "+auxR+" WHERE "+auxA+" "+auxO+" "+auxV;
 			     			}
@@ -83,6 +83,7 @@
 		 	}
 		 return built_queries;
  	}
+
  	//Convierte de decimal a binario y de binario a String para las combinaciones de los minitérminos
  	function dec2bin(dec){
     	return (dec >>> 0).toString(2);
@@ -580,7 +581,7 @@
 				var query='';
 	     		while(i<cLen){
 	     			query='';
-	     			res+="<tr id='m"+i+"' name='m"+i+"' query=''><td><input type='checkbox' id='checa"+i+"' class='filled-in' checked='checked'/><label for='checa"+i+"'>SI</label></td><td>m <sub>"+i+"</sub> : </td><td>"
+	     			res+="<tr id='m"+i+"' name='m"+i+"' query=''><td><input type='checkbox' id='checa"+i+"' class='checadores filled-in' checked='checked' /><label for='checa"+i+"' id='labelCheca"+i+"'>SI</label></td><td>m <sub>"+i+"</sub> : </td><td>"
 	     			j=0;
 	     			aux=combinaciones[i];
 	     			while(j<aux2){
@@ -704,8 +705,8 @@
 	 			pass="pass"
 	 		}
 	 		else if(sitio=="Juel"){
-	 			servidor="10.100.74.157"; //IP
-	 			usuario="hazel"			// Usuario de Mysql 
+	 			servidor="10.100.76.71"; //IP
+	 			usuario="aber"			// Usuario de Mysql 
 	 			pass="pass"
 	 		}
 	 		else{
@@ -713,7 +714,7 @@
 	 			usuario="root"
 	 			pass="n0m3l0"
 	 		}
-
+      console.log("s: "+servidor+" u: "+usuario+" pass: "+pass);
 	 		var n=$("#mini").attr("frag");
 	 		var built_queries = [];
 			var pre = parseInt($("#agregarPredic").attr("n"));

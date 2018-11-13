@@ -39,6 +39,7 @@
 <link rel="stylesheet" type="text/css" href="../js/confirm/jquery-confirm.min.css">
 <link rel="stylesheet" type="text/css" href="../js/validetta101/validetta.min.css">
 <script src="../js/fragHoriz.js"></script>
+<script src="../js/fragVert.js"></script>
     <script>
 
         
@@ -376,9 +377,11 @@ $("#fragVid").click(function(e) {
           <div class="row center">
             <div class="col s12 m12 l6">
               <h4 class="center-align white-text">3) Seleccionar atributos</h4>
-                  <h4 class="left-align">
-                    Atributos:
-                  </h4>
+                  <div id="atributoV">
+              
+                  </div>
+
+
                 <div id="generarF" class="btn blue darken-4 white-text" predicados="0"> Generar Fragmentos</div>
             </div>
             <div class="col s12 m12 l6">
