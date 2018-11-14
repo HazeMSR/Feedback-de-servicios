@@ -356,21 +356,21 @@ $("#fragVid").click(function(e) {
               <h4 class="center-align white-text">4)Expresiones algebraicas</h4>
               <br>
                 <table class='centered responsive-table black'>
-                  <thead>
+                  <thead >
                     <tr>
-                      <th>ID del Predicado:</th>
-                      <th>Relación:</th>
-                      <th>Predicado:
+                      <th>ID de la Expresi&oacute;n:</th>
+
+                      <th>Expresi&oacute;n:
                         <br>
-                         (Atributo, Operador, Valor)
+                         Atributo <sub>0...n</sub> (Relaci&oacute;n)
                       </th>
                     </tr>
                   </thead>
-                  <tbody id="mostrarPredicadosV">
+                  <tbody id="mostrarExpresionesV">
 
                   </tbody>
                 </table>
-
+                  <div id="comprobarExpresiones" class="btn blue darken-4 white-text" expresiones="0">Comprobar expresiones</div>
             </div>
           </div>
           <br>
@@ -382,17 +382,17 @@ $("#fragVid").click(function(e) {
                   </div>
 
 
-                <div id="generarF" class="btn blue darken-4 white-text" predicados="0"> Generar Fragmentos</div>
+                <div id="generarE" class="btn deep-purple darken-4 white-text" expresiones="0"> Generar Expresiones</div>
             </div>
             <div class="col s12 m12 l6">
-              <h4 class="center-align white-text">4) Colocaci&oacute;n de fragmentos</h4>
+              <h4 class="center-align white-text">5) Colocaci&oacute;n de fragmentos</h4>
 
               <div class="input-field col s12 l6">
                   <select id="sitio" name="sitio" class="white-text">
                     <option class='white-text' value="" disabled selected>Escoja el sitio a colocar los fragmentos</option>
                     <option class='white-text' value='Juel'>Juel</option>
                     <option class='white-text' value='Bejar'>Bejar</option>
-                    <option class='white-text' value='Karlita'>Karlita</option>
+                    <option class='white-text' value='Hazel'>Hazel</option>
                   </select>
                   <label class="white-text">Sitios:</label>
               </div>
@@ -402,7 +402,7 @@ $("#fragVid").click(function(e) {
           </div>
         </div>
         
-
+<!---- Termina----->
         <br>
         <br>
         	<div class="row">

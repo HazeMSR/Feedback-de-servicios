@@ -56,7 +56,6 @@
 		preg_match_all("/\`(.*?)\`\s{1}\w+\((.*?)\)(\s{1}\w+)*/", $relacion, $aux);
 		$rLen=count($aux[0]);
 		while($i<$rLen){
-			if($i==0)
 			$atr=$aux[0][$i];
 			$atributos .= "<option class='white-text' value='$atr'>$atr</option>";
 			$i = $i+1;
@@ -71,14 +70,14 @@
 
 	if($val == 3){
 		$i=0;
-		$atributos=" <div class='input-field col s12 white-text' id='atributo' name='atributo'>
+		$atributos=" <div class='input-field col s12 white-text' id='atributoV' name='atributoV'>
                     <select multiple id='atributoselV' class='white-text'>";
 		preg_match_all("/\`(.*?)\`\s{1}\w+\((.*?)\)(\s{1}\w+)*/", $relacion, $aux);
 		$rLen=count($aux[0]);
 		while($i<$rLen){
 			$atr=$aux[0][$i];
 			if($i==0)
-				$atributos .= "<option class='white-text' value='$atr' disabled selected>$atr</option>";
+				$atributos .= "<option class='white-text' value='$atr' required selected>$atr</option>";
 			else
 				$atributos .= "<option class='white-text' value='$atr'>$atr</option>";
 			$i = $i+1;

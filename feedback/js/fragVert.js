@@ -39,5 +39,27 @@
          });
       });
 
+     $('#generarE').on("click",function(){
+        var a =$('#atributoselV').val();
+        var aLen = a.length;
+        var i = 0;
+        var aux = "";
+        var atr="";
+        var pat1= new RegExp(/[\`]+\w+[\`]+/g);
+        var pat2= new RegExp(/\w+/g); 
+        while(i<aLen){
+          aux = pat1.exec(a[i]);
+          aux = pat2.exec(aux); 
+          if(atr.length<1)
+            atr=aux;
+          else
+            atr+=", "+aux;       
+        }
+        var rel = $("#relacionV").val();
+        var n = $("#comprobarExpresiones").attr("expresiones");
+        $("#mostrarExpresionesV").append("<tr id='e"+n+"' name='e"+n+"' numero='"+n+"' relacion='"+rel+"' atributos='"+atr+"><td><b>e <sub>"+n+" :</sub></b></td><td><b>"+rel+"</b></td><td> π <sub>"+atr+"</sub> ("+rel+")</td></tr>")
+        $("#comprobarExpresiones").attr("expresiones",(parseInt(n)+1));
+     });
+
 
 });
