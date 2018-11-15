@@ -38,26 +38,30 @@
           }
          });
       });
-
+//Del paso 3:
      $('#generarE').on("click",function(){
         var a =$('#atributoselV').val();
         var aLen = a.length;
         var i = 0;
         var aux = "";
         var atr="";
-        var pat1= new RegExp(/[\`]+\w+[\`]+/g);
-        var pat2= new RegExp(/\w+/g); 
+
         while(i<aLen){
-          aux = pat1.exec(a[i]);
-          aux = pat2.exec(aux); 
+          aux = a[i].match(/[\`]+\w+[\`]+/g);
+
+          aux = aux[0].match(/\w+/g); 
+
           if(atr.length<1)
             atr=aux;
           else
             atr+=", "+aux;       
+          i++;
         }
         var rel = $("#relacionV").val();
         var n = $("#comprobarExpresiones").attr("expresiones");
-        $("#mostrarExpresionesV").append("<tr id='e"+n+"' name='e"+n+"' numero='"+n+"' relacion='"+rel+"' atributos='"+atr+"><td><b>e <sub>"+n+" :</sub></b></td><td><b>"+rel+"</b></td><td> π <sub>"+atr+"</sub> ("+rel+")</td></tr>")
+        var res ="<tr id='e"+n+"' name='e"+n+"' numero='"+n+"' relacion='"+rel+"' atributos='"+atr+"'><td><input type='checkbox' id='checa"+i+"' class='checadores filled-in' checked='checked' /><label for='checa"+i+"' id='labelCheca"+i+"'>SI</label></td><td><b>e <sub>"+n+" :</sub></b></td><td> <strong>π</strong> <sub>"+atr+"</sub> ("+rel+")</td></tr>";
+        console.log(res)
+        $("#mV").append(res);
         $("#comprobarExpresiones").attr("expresiones",(parseInt(n)+1));
      });
 

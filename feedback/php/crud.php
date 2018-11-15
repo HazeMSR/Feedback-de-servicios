@@ -358,6 +358,7 @@ $("#fragVid").click(function(e) {
                 <table class='centered responsive-table black'>
                   <thead >
                     <tr>
+                      <th>Mandar al sitio:</th>
                       <th>ID de la Expresi&oacute;n:</th>
 
                       <th>Expresi&oacute;n:
@@ -366,7 +367,7 @@ $("#fragVid").click(function(e) {
                       </th>
                     </tr>
                   </thead>
-                  <tbody id="mostrarExpresionesV">
+                  <tbody id="mV">
 
                   </tbody>
                 </table>
@@ -388,13 +389,13 @@ $("#fragVid").click(function(e) {
               <h4 class="center-align white-text">5) Colocaci&oacute;n de fragmentos</h4>
 
               <div class="input-field col s12 l6">
-                  <select id="sitio" name="sitio" class="white-text">
+                  <select id="sitio" name="sitioV" class="white-text">
                     <option class='white-text' value="" disabled selected>Escoja el sitio a colocar los fragmentos</option>
                     <option class='white-text' value='Juel'>Juel</option>
                     <option class='white-text' value='Bejar'>Bejar</option>
                     <option class='white-text' value='Hazel'>Hazel</option>
                   </select>
-                  <label class="white-text">Sitios:</label>
+                  <label for="sitioV" class="white-text">Sitios:</label>
               </div>
               <br>
               <div id="colocarV" class="btn amber darken-2 black-text" queries="">Colocar en sitio</div>
