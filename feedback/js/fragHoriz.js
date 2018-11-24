@@ -690,10 +690,10 @@
 	 $("#colocar").on("click",function(){
 	 	var val=parseInt($("#mini").attr("frag"));
 	 	if( val == 0 ){
-	 		alert("Agregue expresiones antes de enviar al sitio");
+	 		alert("Agregue predicados antes de enviar al sitio");
 	 	}
 	 	else{
-	 		var sitio=$("#sitioV").val();
+	 		var sitio=$("#sitio").val();
 	 		var servidor="";
 	 		var usuario="";
 	 		var pass="";
@@ -714,15 +714,13 @@
 	 			usuario="root"
 	 			pass="n0m3l0"
 	 		}
-      //Algo similar
-      /*console.log("s: "+servidor+" u: "+usuario+" pass: "+pass);
+      
+      console.log("s: "+servidor+" u: "+usuario+" pass: "+pass);
 	 		var n=$("#mini").attr("frag");
 	 		var built_queries = [];
 			var pre = parseInt($("#agregarPredic").attr("n"));
 			var numeroP = parseInt($("#numeroP").val());
-      */
 
-/*
 				built_queries = getQueries(n);
 			 	var q = built_queries.join('$;');
 			 	$.ajax({
@@ -735,7 +733,7 @@
 							
 				    }
 				});
-*/
+
 
 		}
 	 });

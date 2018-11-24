@@ -371,7 +371,7 @@ $("#fragVid").click(function(e) {
 
                   </tbody>
                 </table>
-                  <div id="comprobarExpresiones" class="btn blue darken-4 white-text" expresiones="0">Comprobar expresiones</div>
+                  <div id="comprobarExpresiones" class="btn blue darken-4 white-text" expresiones="0" val="False">Comprobar expresiones</div>
             </div>
           </div>
           <br>
@@ -389,7 +389,7 @@ $("#fragVid").click(function(e) {
               <h4 class="center-align white-text">5) Colocaci&oacute;n de fragmentos</h4>
 
               <div class="input-field col s12 l6">
-                  <select id="sitio" name="sitioV" class="white-text">
+                  <select id="sitioV" name="sitioV" class="white-text">
                     <option class='white-text' value="" disabled selected>Escoja el sitio a colocar los fragmentos</option>
                     <option class='white-text' value='Juel'>Juel</option>
                     <option class='white-text' value='Bejar'>Bejar</option>
